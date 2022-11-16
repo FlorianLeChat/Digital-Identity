@@ -1,0 +1,16 @@
+form {
+    width: 35%;
+    margin: 10rem auto 0 auto;
+    border: 1px solid grey;
+    padding: 5%;
+    border-radius: 10% / 50%;
+    .btn, .btn-lg, .btn-primary, .btn-sm{
+        background-color: #357696;
+        &:hover{
+            background-color: #003955;
+        }
+        width: 100%;
+        padding: .5rem;
+        font-weight: bold;
+    }
+  }

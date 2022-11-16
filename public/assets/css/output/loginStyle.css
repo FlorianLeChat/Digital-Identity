@@ -1,0 +1,23 @@
+/* line 1, ../../Projet_Miage/public/assets/css/input/loginStyle.scss */
+form {
+  width: 35%;
+  margin: 10rem auto 0 auto;
+  border: 1px solid grey;
+  padding: 5%;
+  border-radius: 10% / 50%;
+}
+
+/* line 7, ../../Projet_Miage/public/assets/css/input/loginStyle.scss */
+form .btn, form .btn-lg, form .btn-primary, form .btn-sm {
+  background-color: #357696;
+  width: 100%;
+  padding: .5rem;
+  font-weight: bold;
+}
+
+/* line 9, ../../Projet_Miage/public/assets/css/input/loginStyle.scss */
+form .btn:hover, form .btn-lg:hover, form .btn-primary:hover, form .btn-sm:hover {
+  background-color: #003955;
+}
+
+/*# sourceMappingURL=loginStyle.css.map */

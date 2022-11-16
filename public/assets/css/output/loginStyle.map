@@ -1,0 +1,12 @@
+{
+	"version": 3,
+	"file": "loginStyle.css",
+	"sources": [
+		"../input/loginStyle.scss"
+	],
+	"sourcesContent": [
+		"form {\r\n    width: 35%;\r\n    margin: 10rem auto 0 auto;\r\n    border: 1px solid grey;\r\n    padding: 5%;\r\n    border-radius: 10% / 50%;\r\n    .btn, .btn-lg, .btn-primary, .btn-sm{\r\n        background-color: #357696;\r\n        &:hover{\r\n            background-color: #003955;\r\n        }\r\n        width: 100%;\r\n        padding: .5rem;\r\n        font-weight: bold;\r\n    }\r\n  }"
+	],
+	"names": [],
+	"mappings": ";AAAA,AAAA,IAAI,CAAC;EACD,KAAK,EAAE,GAAG;EACV,MAAM,EAAE,iBAAiB;EACzB,MAAM,EAAE,cAAc;EACtB,OAAO,EAAE,EAAE;EACX,aAAa,EAAE,SAAS;CAUzB;;;AAfH,AAMI,IANA,CAMA,IAAI,EANR,IAAI,CAMM,OAAO,EANjB,IAAI,CAMe,YAAY,EAN/B,IAAI,CAM6B,OAAO,CAAA;EAChC,gBAAgB,EAAE,OAAO;EAIzB,KAAK,EAAE,IAAI;EACX,OAAO,EAAE,KAAK;EACd,WAAW,EAAE,IAAI;CACpB;;;AAdL,AAQQ,IARJ,CAMA,IAAI,AAEC,MAAM,EARf,IAAI,CAMM,OAAO,AAER,MAAM,EARf,IAAI,CAMe,YAAY,AAEtB,MAAM,EARf,IAAI,CAM6B,OAAO,AAE/B,MAAM,CAAA;EACH,gBAAgB,EAAE,OAAO;CAC5B"
+}
