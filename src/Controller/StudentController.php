@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class StudentController extends AbstractController
 {
-    /**
+     /**
      * @Route("/portalStudent", name="app_student")
      */
     public function index(): Response
