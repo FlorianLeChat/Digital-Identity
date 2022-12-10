@@ -1,0 +1,28 @@
+{
+  "name": "projetmiage",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev-server": "encore dev-server",
+    "dev": "encore dev",
+    "watch": "encore dev --watch",
+    "build": "encore production --progress"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EmreErs/Projet_Miage.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EmreErs/Projet_Miage/issues"
+  },
+  "homepage": "https://github.com/EmreErs/Projet_Miage#readme",
+  "error-ex": "git+https://github.com/Qix-/node-error-ex.git"
+}

@@ -1,7 +1,21 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Mon Compte Etudiant{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block title %}Page étudiante{% endblock %}
 
 {% block content %}
-    {# <h1>Bienvenue {{ app.user.firstname}}</h1> #}
+    <div class='row'>
+        <div class='col-md-4 offset-md-4'>
+            <center><h3>Affichage de listes</h3>
+            <input href=""
+                   type="button"
+                   value="Liste des absences">
+            </br>
+                <a href="{{ path('student_presence') }}" class="text-reset">Liste présence</a>
+            </center>
+        </div>
+
+
+    </div>
 {% endblock %}

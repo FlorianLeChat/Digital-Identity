@@ -1,0 +1,17 @@
+
+    <h3>Liste de vos présence</h3>
+    {% if presences|length %}
+        <table>
+        <tr><th>Nom</th><th>prenom</th><th>token</th></tr>
+        {% for p in presences %}
+            <tr><td>{{ p.nom }}</td>
+                <td>{{ p.prenom }}</td>
+                <td>{{ p.token }}</td></tr>
+
+        {% endfor %}
+        </table>
+    {% else %}
+        <div>
+            <i>Vous n'avez jamais été présent</i>
+        </div>
+    {% endif %}
