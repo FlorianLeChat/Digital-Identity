@@ -1,0 +1,12 @@
+{
+	"version": 3,
+	"file": "teacherStyle.css",
+	"sources": [
+		"../input/teacherStyle.scss"
+	],
+	"sourcesContent": [
+		".generateCode{\r\n    \r\n    text-align: center;\r\n    margin: 20rem auto 2rem auto;\r\n}"
+	],
+	"names": [],
+	"mappings": ";AAAA,AAAA,aAAa,CAAA;EAET,UAAU,EAAE,MAAM;EAClB,MAAM,EAAE,oBAAoB;CAC/B"
+}

@@ -24,5 +24,10 @@
     "url": "https://github.com/EmreErs/Projet_Miage/issues"
   },
   "homepage": "https://github.com/EmreErs/Projet_Miage#readme",
-  "error-ex": "git+https://github.com/Qix-/node-error-ex.git"
+  "error-ex": "git+https://github.com/Qix-/node-error-ex.git",
+  "devDependencies": {
+    "@popperjs/core": "^2.11.6",
+    "bootstrap": "^5.2.3",
+    "jquery": "^3.6.3"
+  }
 }

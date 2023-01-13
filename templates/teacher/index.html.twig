@@ -8,4 +8,17 @@
     <div><button type="button" class="btn btn-primary">Faire l'appel</button></div>
     <div><button type="button" class="btn btn-primary">Consulter présences</button></div>
 </div>
+
+<div class="choiceCourse">
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+</div>
+
+<div class="generateCode">
+    <button onclick="location.href='{{ path('generate_code') }}'" class="btn btn-primary">Générer un nouveau code</button>
+    {# <a href="{{ path('generate_code') }}" class="btn btn-primary">Générer un code</a> #}
+</div>
+
+
 {% endblock %}
