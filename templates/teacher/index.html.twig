@@ -4,19 +4,50 @@
 
 {% block content %}
 
+{{test}}
+{{dump}}
+{% for noms_formation in noms_formations %}
+  {{noms_formation}}
+{% endfor %}
+
+{% for noms_matiere in noms_matieres %}
+  {{noms_matiere}}
+{% endfor %}
+
 <div class="">
     <div><button type="button" class="btn btn-primary">Faire l'appel</button></div>
     <div><button type="button" class="btn btn-primary">Consulter présences</button></div>
 </div>
 
-<div class="choiceCourse">
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    {{ form_end(form) }}
-</div>
+<form id="generateQrCode">
+  <div class="form-group">
+    <label for="formation">Sélectionner une formation</label>
+    <select class="form-control" id="formation">
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="matiere">Sélectionner une matiere</label>
+    <select multiple class="form-control" id="matiere">
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="typeCours">Sélectionner le type du cours</label>
+    <select multiple class="form-control" id="typeCours">
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+    </select>
+  </div>
+</form>
 
 <div class="generateCode">
-    <button onclick="location.href='{{ path('generate_code') }}'" class="btn btn-primary">Générer un nouveau code</button>
+    <button onclick="location.href='{{ path('generate_qr_code') }}'" class="btn btn-primary">Générer un qr code</button>
     {# <a href="{{ path('generate_code') }}" class="btn btn-primary">Générer un code</a> #}
 </div>
 

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -33,8 +35,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'integer')]
     private $code_badge;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private $formation_id;
+    #[ORM\Column(nullable: true)]
+    private ?int $td = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $tp = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $year = null;
+
+    #[ORM\ManyToMany(targetEntity: Matiere::class, mappedBy: 'user')]
+    private Collection $matieres;
+
+    #[ORM\OneToMany(mappedBy: 'formation', targetEntity: User::class)]
+    private Collection $users;
+
+    public function __construct()
+    {
+        $this->matieres = new ArrayCollection();
+        $this->users = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -77,8 +97,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
@@ -161,14 +179,95 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getFormationId(): ?int
+    public function getTd(): ?int
     {
-        return $this->formation_id;
+        return $this->td;
     }
 
-    public function setFormationId(?int $formation_id): self
+    public function setTd(?int $td): self
     {
-        $this->formation_id = $formation_id;
+        $this->td = $td;
+
+        return $this;
+    }
+
+    public function getTp(): ?int
+    {
+        return $this->tp;
+    }
+
+    public function setTp(?int $tp): self
+    {
+        $this->tp = $tp;
+
+        return $this;
+    }
+
+    public function getYear(): ?int
+    {
+        return $this->year;
+    }
+
+    public function setYear(?int $year): self
+    {
+        $this->year = $year;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Matiere>
+     */
+    public function getMatieres(): Collection
+    {
+        return $this->matieres;
+    }
+
+    public function addMatiere(Matiere $matiere): self
+    {
+        if (!$this->matieres->contains($matiere)) {
+            $this->matieres->add($matiere);
+            $matiere->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMatiere(Matiere $matiere): self
+    {
+        if ($this->matieres->removeElement($matiere)) {
+            $matiere->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->setFormation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getFormation() === $this) {
+                $user->setFormation(null);
+            }
+        }
 
         return $this;
     }
