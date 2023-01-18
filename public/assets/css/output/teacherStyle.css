@@ -10,4 +10,13 @@
   margin: 0 auto;
 }
 
+/* line 12, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/teacherStyle.scss */
+#boutons {
+  margin: 0 15rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 100vh;
+}
+
 /*# sourceMappingURL=teacherStyle.css.map */

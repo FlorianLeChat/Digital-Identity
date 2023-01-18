@@ -5,13 +5,13 @@
 {% block content %}
  
 
-<div class="">
-    <div><button type="button" class="btn btn-primary">Faire l'appel</button></div>
-    <div><button type="button" class="btn btn-primary">Consulter présences</button></div>
+<div id="boutons">
+    <div><button type="button" class="btn btn-primary" id="consulterPresence">Consulter présences</button></div>
+    <div><button type="button" class="btn btn-primary" id="faireApple">Faire l'appel</button></div>
 </div>
 
 
-<form id="generateQrCode" method="POST" action="/generate_qr_code">
+<form id="generateQrCode" method="POST" action="/generate_qr_code" style="display:none">
   <div class="form-group">
     <label for="formation">Sélectionner une formation</label>
     <select class="form-control" id="formation" name="formation"  >
