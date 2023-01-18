@@ -39,6 +39,30 @@ class FormationRepository extends ServiceEntityRepository
         }
     }
 
+    // Permet de récupérer l'identifiant unique à partir du nom de la formation
+    public function getIdByName(string $nom): string
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "SELECT id FROM formation WHERE nom_formation = :nom";
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery(["nom" => $nom]);
+
+        return $resultSet->fetch()["id"];
+    }
+
+    // Permet de récupérer toutes les formations
+    public function getAll(): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "SELECT nom_formation FROM formation";
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery();
+
+        return $resultSet->fetchAllAssociative();
+    }
+
 //    /**
 //     * @return Formation[] Returns an array of Formation objects
 //     */

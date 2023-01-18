@@ -22,31 +22,32 @@ use Endroid\QrCode\Writer\ValidationException;
 
 use App\Entity\Formation;
 use App\Entity\Matiere;
+use App\Entity\Cours;
+use App\Repository\FormationRepository;
+use App\Repository\MatiereRepository;
+use App\Repository\CoursRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class TeacherController extends AbstractController
 {   
     #[Route('/portalTeacher', name: 'app_teacher')]
-    public function index(): Response
+    public function index(EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
-
-        $formation = new Formation();
-        $matiere = new Matiere();
-
-        $noms_formations = $formation->getFormations();
-        $noms_matieres = $formation->getMatieres();
-
-        $dump = dump($noms_formations);
-
-       // var_dump($user);
         $id = $user->getId();
 
+        $formationRepository = $entityManager->getRepository(Formation::class);
+        $noms_formations = $formationRepository->getAll();
+
+        $matiereRepository = $entityManager->getRepository(Matiere::class);
+        $noms_matieres = $matiereRepository->getAll($id);   
+        
         return $this->render('teacher/index.html.twig', [
             'controller_name' => 'TeacherController',
             "test" => $id,
             "noms_formations" => $noms_formations,
-            "noms_matieres" => $noms_matieres,
-            "dump" => $dump
+            "noms_matieres" => $noms_matieres
         ]);
     }
 
@@ -54,8 +55,25 @@ class TeacherController extends AbstractController
     * @Route("/generate_qr_code", name="generate_qr_code")
     */
 
-    public function generateQRCodeAction()
+    public function generateQRCodeAction(Request $request, EntityManagerInterface $entityManager)
     {
+        // Identifiant de l'utilisateur
+        $user = $this->getUser();
+        $id = $user->getId();
+
+        // Fonctions de l'objet "Cours" 
+        $coursRepository = $entityManager->getRepository(Cours::class);
+
+        // Données POST du formulaire
+        $formation = $request->request->get("formation");
+        $matiere = $request->request->get("matiere");
+        $type = $request->request->get("typeCours");
+  
+        // Insertion dans la base de données
+        $coursRepository->insertOne($entityManager, $id, $formation, $matiere, $type);
+
+
+
         
         $writer = new PngWriter();
 

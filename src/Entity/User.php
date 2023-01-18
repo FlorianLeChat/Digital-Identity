@@ -50,10 +50,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'formation', targetEntity: User::class)]
     private Collection $users;
 
+    #[ORM\ManyToMany(targetEntity: Cours::class, mappedBy: 'user')]
+    private Collection $cours;
+
     public function __construct()
     {
         $this->matieres = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->cours = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -267,6 +271,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($user->getFormation() === $this) {
                 $user->setFormation(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cours>
+     */
+    public function getCours(): Collection
+    {
+        return $this->cours;
+    }
+
+    public function addCour(Cours $cour): self
+    {
+        if (!$this->cours->contains($cour)) {
+            $this->cours->add($cour);
+            $cour->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCour(Cours $cour): self
+    {
+        if ($this->cours->removeElement($cour)) {
+            $cour->removeUser($this);
         }
 
         return $this;

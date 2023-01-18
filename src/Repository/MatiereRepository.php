@@ -39,6 +39,32 @@ class MatiereRepository extends ServiceEntityRepository
         }
     }
 
+    // Permet de récupérer l'identifiant unique d'une matière à partir de son nom
+    public function getIdByName(string $nom): string
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "SELECT id FROM matiere WHERE nome_matiere = :nom";
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery(["nom" => $nom]);
+
+        return $resultSet->fetch()["id"];
+    }
+
+    // Permet de récupérer toutes les matières
+    public function getAll(int $id): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "SELECT nome_matiere FROM matiere WHERE id IN (
+            SELECT matiere_id FROM matiere_user WHERE user_id = :id 
+            )" ;
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery(["id" => $id]);
+
+        return $resultSet->fetchAllAssociative();
+    }
+
 //    /**
 //     * @return Matiere[] Returns an array of Matiere objects
 //     */

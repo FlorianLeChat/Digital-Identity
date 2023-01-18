@@ -24,11 +24,15 @@ class Matiere
     #[ORM\ManyToMany(targetEntity: Formation::class, inversedBy: 'matieres')]
     private Collection $formation;
 
+    #[ORM\ManyToMany(targetEntity: Cours::class, mappedBy: 'matiere')]
+    private Collection $cours;
+
     public function __construct()
     {
         $this->uder_id = new ArrayCollection();
         $this->user = new ArrayCollection();
         $this->formation = new ArrayCollection();
+        $this->cours = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -92,6 +96,33 @@ class Matiere
     public function removeFormation(Formation $formation): self
     {
         $this->formation->removeElement($formation);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cours>
+     */
+    public function getCours(): Collection
+    {
+        return $this->cours;
+    }
+
+    public function addCour(Cours $cour): self
+    {
+        if (!$this->cours->contains($cour)) {
+            $this->cours->add($cour);
+            $cour->addMatiere($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCour(Cours $cour): self
+    {
+        if ($this->cours->removeElement($cour)) {
+            $cour->removeMatiere($this);
+        }
 
         return $this;
     }
