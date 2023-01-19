@@ -42,13 +42,13 @@ class CoursRepository extends ServiceEntityRepository
         }
     }
 
-	public function getEleves(): array
+	public function getEleves(int $userId): array
 	{
 		// Récupération des élèves présents dans la (dernière) salle de cours.
 		$conn = $this->getEntityManager()->getConnection();
 
-		$query = $conn->prepare("SELECT * FROM `presence` WHERE `token` IN (SELECT MAX(cours_id) FROM `cours_user`);");
-		$result = $query->executeQuery();
+		$query = $conn->prepare("SELECT * FROM `presence` WHERE `token` IN (SELECT MAX(cours_id) FROM `cours_user` WHERE `user_id` = :id);");
+		$result = $query->executeQuery(["id" => $userId]);
 
 		return $result->fetchAllAssociative();
 	}
