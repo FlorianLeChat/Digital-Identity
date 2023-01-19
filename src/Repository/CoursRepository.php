@@ -4,12 +4,9 @@ namespace App\Repository;
 
 use App\Entity\Matiere;
 use App\Entity\Formation;
-use App\Entity\User;
 use App\Entity\Cours;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Repository\FormationRepository;
-use App\Repository\MatiereRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -44,6 +41,17 @@ class CoursRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+	public function getEleves(): array
+	{
+		// Récupération des élèves présents dans la (dernière) salle de cours.
+		$conn = $this->getEntityManager()->getConnection();
+
+		$query = $conn->prepare("SELECT * FROM `presence` WHERE `token` IN (SELECT MAX(cours_id) FROM `cours_user`);");
+		$result = $query->executeQuery();
+
+		return $result->fetchAllAssociative();
+	}
 
 	public function setState(int $coursId): void
 	{

@@ -35,10 +35,13 @@ class TeacherController extends AbstractController
         $matiereRepository = $entityManager->getRepository(Matiere::class);
         $noms_matieres = $matiereRepository->getAll($id);
 
+		$coursRepository = $entityManager->getRepository(Cours::class);
+
         return $this->render('teacher/index.html.twig', [
             'controller_name' => 'TeacherController',
             "noms_formations" => $noms_formations,
-            "noms_matieres" => $noms_matieres
+            "noms_matieres" => $noms_matieres,
+			"eleves" => $coursRepository->getEleves()
         ]);
     }
 

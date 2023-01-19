@@ -3,10 +3,21 @@
 {% block title %}Hello TeacherController!{% endblock %}
 
 {% block content %}
- 
+
 
 <div id="boutons">
-    <div><button type="button" class="btn btn-primary" id="consulterPresence">Consulter présences</button></div>
+    <div>
+		<button type="button" class="btn btn-primary" id="consulterPresence">Consulter présences</button>
+
+		<ul style="display: none" id="liste">
+			<h3>Élèves présents lors du dernier cours</h3>
+
+			{% for eleve in eleves %}
+				<li>{{eleve.prenom}} {{eleve.nom}}</li>
+			{% endfor %}
+		</ul>
+	</div>
+
     <div><button type="button" class="btn btn-primary" id="faireApple">Faire l'appel</button></div>
 </div>
 
