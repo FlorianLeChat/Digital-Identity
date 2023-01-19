@@ -8,6 +8,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @extends ServiceEntityRepository<User>
@@ -55,6 +56,39 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         $this->add($user, true);
     }
+
+	public function setPresence(UserInterface $user, int $coursId): int
+	{
+        // Récupération de la connexion à la base de données
+        $conn = $this->getEntityManager()->getConnection();
+
+		// Vérification de l'existence du cours (et si il n'est pas terminé)
+        $checkCours = $conn->prepare("SELECT 1 FROM cours WHERE id = :id AND terminé = 0");
+        $resultCheckCours = $checkCours->executeQuery(["id" => $coursId]);
+
+		if (!$resultCheckCours->fetch()) {
+			// Le cours n'existe pas ou est terminé.
+			return 2;
+		}
+
+        // Identifiant de l'utilisateur
+        $userId = $user->getId();
+
+		// Vérification de si le cours est terminé
+        $checkPresent = $conn->prepare("SELECT 1 FROM presence WHERE stud_presence_id = :userId AND token = :coursId");
+        $resultCheckPresent = $checkPresent->executeQuery(["userId" => $userId, "coursId" => $coursId]);
+
+		if ($resultCheckPresent->fetch()) {
+			// L'utilisateur est déjà présent.
+			return 1;
+		}
+
+		// Mise à jour de la présence.
+        $insertCours = $conn->prepare("INSERT INTO presence (stud_presence_id, nom, prenom, token) VALUES (?, ?, ?, ?)");
+        $insertCours->executeQuery([$userId, $user->getLastname(), $user->getFirsname(), $coursId]);
+
+		return 0;
+	}
 
 //    /**
 //     * @return User[] Returns an array of User objects

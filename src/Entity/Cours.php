@@ -31,6 +31,9 @@ class Cours
     #[ORM\Column(length: 16)]
     private ?string $type = null;
 
+    #[ORM\Column]
+    private ?bool $terminé = null;
+
     public function __construct()
     {
         $this->matiere = new ArrayCollection();
@@ -135,6 +138,18 @@ class Cours
     public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function isTerminé(): ?bool
+    {
+        return $this->terminé;
+    }
+
+    public function setTerminé(bool $terminé): self
+    {
+        $this->terminé = $terminé;
 
         return $this;
     }

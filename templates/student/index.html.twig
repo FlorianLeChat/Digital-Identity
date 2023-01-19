@@ -15,7 +15,19 @@
                 <a href="{{ path('student_presence') }}" class="text-reset">Liste présence</a>
             </center>
         </div>
-
-
     </div>
+
+	{% if cours != 0 %}
+		{% if code == 0 %}
+			<p>Votre présence a bien été validée.</p>
+
+			<a href="{{ path('download_certificat', {cours: cours}) }}">Télécharger le certificat de présence</a>
+		{% elseif code == 1 %}
+			<p>Vous êtes déjà noté présent à ce cours.</p>
+
+			<a href="{{ path('download_certificat', {cours: cours}) }}">Télécharger à nouveau le certificat de présence</a>
+		{% elseif code == 2 %}
+			<p>Ce cours n'existe pas ou est maintenant terminé.</p>
+		{% endif %}
+	{% endif %}
 {% endblock %}

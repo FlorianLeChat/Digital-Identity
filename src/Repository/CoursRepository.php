@@ -45,7 +45,16 @@ class CoursRepository extends ServiceEntityRepository
         }
     }
 
-    public function insertOne(EntityManagerInterface $entityManager, int $userId, string $formation, string $matiere, string $type): void
+	public function setState(int $coursId): void
+	{
+		// On met fin à la session de cours.
+        $conn = $this->getEntityManager()->getConnection();
+
+		$query = $conn->prepare("UPDATE `cours` SET `terminé` = '1' WHERE `id` = :id");
+        $query->executeQuery(["id" => $coursId]);
+	}
+
+    public function insertOne(EntityManagerInterface $entityManager, int $userId, string $formation, string $matiere, string $type): int
     {
         // Récupération de la connexion à la base de données
         $conn = $this->getEntityManager()->getConnection();
@@ -53,10 +62,9 @@ class CoursRepository extends ServiceEntityRepository
         // Récupération des fonctions pour les formations, matières et utilisateurs
         $formationRepository = $entityManager->getRepository(Formation::class);
         $matiereRepository = $entityManager->getRepository(Matiere::class);
-        $userRepository = $entityManager->getRepository(User::class);
 
         // Insertion du cours dans la base de données
-        $insertCours = $conn->prepare("INSERT INTO cours (date, type) VALUES (:date, :type)");
+        $insertCours = $conn->prepare("INSERT INTO cours (date, type, terminé) VALUES (:date, :type, 0)");
         $insertCours->executeQuery(["date" => date('Y-m-d H:i:s'), "type" => $type]);
 
         // Récupération de l'identifiant unique du cours
@@ -73,6 +81,8 @@ class CoursRepository extends ServiceEntityRepository
         // Insertion de la relation de la matière liée au cours
         $insertMatiere = $conn->prepare("INSERT INTO cours_matiere VALUES (:cours, :matiere)");
         $insertMatiere->executeQuery(["cours" => $coursId, "matiere" => $matiereRepository->getIdByName($matiere)]);
+
+		return $coursId;
     }
 
 
