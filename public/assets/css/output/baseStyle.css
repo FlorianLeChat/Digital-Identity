@@ -1,0 +1,73 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+/* line 3, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/baseStyle.scss */
+html {
+  scroll-behavior: smooth;
+  color: #0e0e10;
+  background-color: white;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* line 8, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/baseStyle.scss */
+html body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  min-height: 100vh;
+  max-height: 100vh;
+}
+
+/* line 17, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/baseStyle.scss */
+nav {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #004765;
+  color: #00090d;
+  border-bottom: 6px solid #007aa0;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* line 29, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/baseStyle.scss */
+nav #logo {
+  filter: brightness(0) invert(1);
+  margin-bottom: 10px;
+  margin-right: 20px;
+  margin-top: 10px;
+  opacity: 0.9;
+  height: 63px;
+  width: 400px;
+}
+
+/* line 38, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/baseStyle.scss */
+nav .onglets a {
+  text-decoration: none;
+  margin-right: 10px;
+  color: #e6edf0;
+  border-bottom: 1px solid #e6edf0;
+  padding-bottom: 1px;
+  font-size: 15px;
+}
+
+/* line 48, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/baseStyle.scss */
+footer {
+  margin-top: auto;
+  background-color: #333a40;
+  padding: 10px;
+}
+
+/* line 54, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/baseStyle.scss */
+footer b {
+  color: #969696;
+  font-size: 15px;
+}
+
+/* line 58, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/baseStyle.scss */
+footer i {
+  color: #969696;
+  font-size: 13px;
+}
+
+/*# sourceMappingURL=baseStyle.css.map */
