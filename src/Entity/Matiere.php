@@ -18,7 +18,7 @@ class Matiere
     #[ORM\Column(length: 255)]
     private ?string $nome_matiere = null;
 
-    #[ORM\ManyToMany(targetEntity: user::class, inversedBy: 'matieres')]
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'matieres')]
     private Collection $user;
 
     #[ORM\ManyToMany(targetEntity: Formation::class, inversedBy: 'matieres')]
@@ -125,5 +125,9 @@ class Matiere
         }
 
         return $this;
+    }
+
+    public function __toString(){ // Pour afficher les selects dans le champ matiere dans easy admin
+        return $this->getNomeMatiere();
     }
 }

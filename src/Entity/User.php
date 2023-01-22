@@ -302,4 +302,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function __toString(){ // Pour afficher les selects dans le champ formation dans easy admin
+        return $this->getUserIdentifier();
+    }
 }
