@@ -42,7 +42,7 @@ class TeacherController extends AbstractController
             "noms_formations" => $noms_formations,
             "noms_matieres" => $noms_matieres,
 			"eleves" => $coursRepository->getPresents($id),
-            "absents" => $coursRepository->getAbsents($id)
+           // "absents" => $coursRepository->getAbsents($id)
         ]);
     }
 

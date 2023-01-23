@@ -53,7 +53,7 @@ class CoursRepository extends ServiceEntityRepository
 		return $result->fetchAllAssociative();
 	}
 
-	public function getAbsents(): array
+	/*public function getAbsents(): array
 	{
 		// Récupération des élèves présents dans la (dernière) salle de cours.
 		$conn = $this->getEntityManager()->getConnection();
@@ -62,7 +62,7 @@ class CoursRepository extends ServiceEntityRepository
 		$result = $query->executeQuery();
 
 		return $result->fetchAllAssociative();
-	}
+	}*/
 
 	public function setState(int $coursId): void
 	{
