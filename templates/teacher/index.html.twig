@@ -5,18 +5,29 @@
 {% block content %}
 
 
+
 <div id="boutons">
     <div>
-		<button type="button" class="btn btn-primary" id="consulterPresence">Consulter présences</button>
+      <button type="button" class="btn btn-primary" id="consulterPresence">Consulter présences</button>
+      <ul style="display: none" id="liste">
+        <h3>Élèves présents lors du dernier cours</h3>
 
-		<ul style="display: none" id="liste">
-			<h3>Élèves présents lors du dernier cours</h3>
+        {% for eleve in eleves %}
+          <li>{{eleve.firsname}} {{eleve.lastname}}</li>
+        {% endfor %}
+      </ul>
+	  </div>
 
-			{% for eleve in eleves %}
-				<li>{{eleve.prenom}} {{eleve.nom}}</li>
-			{% endfor %}
-		</ul>
-	</div>
+    <div>
+		  <button type="button" class="btn btn-primary" id="consulterAbsence">Consulter absences</button>
+      <ul style="display: none" id="liste">
+        <h3>Élèves absents lors du dernier cours</h3>
+
+        {% for absent in absents %}
+          <li>{{absent.firsname}} {{absent.lastname}}</li>
+        {% endfor %}
+      </ul>
+	  </div>
 
     <div><button type="button" class="btn btn-primary" id="faireApple">Faire l'appel</button></div>
 </div>

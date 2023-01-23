@@ -27,11 +27,15 @@ class Formation
     #[ORM\ManyToMany(targetEntity: Cours::class, mappedBy: 'formation')]
     private Collection $cours;
 
+    #[ORM\OneToMany(mappedBy: 'formation', targetEntity: User::class)]
+    private Collection $users;
+
     public function __construct()
     {
         $this->formations = new ArrayCollection();
         $this->matieres = new ArrayCollection();
         $this->cours = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int

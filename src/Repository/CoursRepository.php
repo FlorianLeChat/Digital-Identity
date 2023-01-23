@@ -42,13 +42,24 @@ class CoursRepository extends ServiceEntityRepository
         }
     }
 
-	public function getEleves(int $userId): array
+	public function getPresents(int $userId): array
 	{
 		// Récupération des élèves présents dans la (dernière) salle de cours.
 		$conn = $this->getEntityManager()->getConnection();
 
-		$query = $conn->prepare("SELECT * FROM `presence` WHERE `token` IN (SELECT MAX(cours_id) FROM `cours_user` WHERE `user_id` = :id);");
+		$query = $conn->prepare("SELECT * FROM user WHERE id IN (SELECT user_id FROM `presence_user` WHERE presence_id IN (SELECT presence_id FROM `presence_cours` WHERE cours_id IN (SELECT MAX(cours_id) FROM `cours_user` WHERE `user_id` = :id)));");
 		$result = $query->executeQuery(["id" => $userId]);
+
+		return $result->fetchAllAssociative();
+	}
+
+	public function getAbsents(): array
+	{
+		// Récupération des élèves présents dans la (dernière) salle de cours.
+		$conn = $this->getEntityManager()->getConnection();
+
+		$query = $conn->prepare("SELECT * FROM `user` WHERE roles = '[\"ROLE_STUDENT\"]' && id NOT IN(SELECT cours_id FROM cours_user WHERE cours_id = MAX(cours_id));");
+		$result = $query->executeQuery();
 
 		return $result->fetchAllAssociative();
 	}
@@ -72,6 +83,8 @@ class CoursRepository extends ServiceEntityRepository
         $matiereRepository = $entityManager->getRepository(Matiere::class);
 
         // Insertion du cours dans la base de données
+        date_default_timezone_set("Europe/Paris");
+         
         $insertCours = $conn->prepare("INSERT INTO cours (date, type, terminé) VALUES (:date, :type, 0)");
         $insertCours->executeQuery(["date" => date('Y-m-d H:i:s'), "type" => $type]);
 

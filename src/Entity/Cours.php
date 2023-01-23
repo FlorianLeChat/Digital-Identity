@@ -34,11 +34,15 @@ class Cours
     #[ORM\Column]
     private ?bool $terminé = null;
 
+    #[ORM\ManyToMany(targetEntity: Presence::class, mappedBy: 'cours')]
+    private Collection $presences;
+
     public function __construct()
     {
         $this->matiere = new ArrayCollection();
         $this->formation = new ArrayCollection();
         $this->user = new ArrayCollection();
+        $this->presences = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -150,6 +154,33 @@ class Cours
     public function setTerminé(bool $terminé): self
     {
         $this->terminé = $terminé;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Presence>
+     */
+    public function getPresences(): Collection
+    {
+        return $this->presences;
+    }
+
+    public function addPresence(Presence $presence): self
+    {
+        if (!$this->presences->contains($presence)) {
+            $this->presences->add($presence);
+            $presence->addCour($this);
+        }
+
+        return $this;
+    }
+
+    public function removePresence(Presence $presence): self
+    {
+        if ($this->presences->removeElement($presence)) {
+            $presence->removeCour($this);
+        }
 
         return $this;
     }

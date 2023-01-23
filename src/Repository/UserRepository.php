@@ -75,7 +75,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $userId = $user->getId();
 
 		// Vérification de si le cours est terminé
-        $checkPresent = $conn->prepare("SELECT 1 FROM presence WHERE stud_presence_id = :userId AND token = :coursId");
+        $checkPresent = $conn->prepare("SELECT 1 FROM presence_user WHERE user_id = :userId AND presence_id IN (SELECT presence_id FROM presence WHERE token = :coursId)");
         $resultCheckPresent = $checkPresent->executeQuery(["userId" => $userId, "coursId" => $coursId]);
 
 		if ($resultCheckPresent->fetch()) {
@@ -84,8 +84,17 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 		}
 
 		// Mise à jour de la présence.
-        $insertCours = $conn->prepare("INSERT INTO presence (stud_presence_id, nom, prenom, token) VALUES (?, ?, ?, ?)");
-        $insertCours->executeQuery([$userId, $user->getLastname(), $user->getFirsname(), $coursId]);
+        // Récupération de l'identifiant unique du cours
+        $insertUser = $conn->prepare("INSERT INTO presence (token) VALUES (:token)");
+        $insertUser->executeQuery(["token" => $coursId]);
+
+        $presenceId = $conn->lastInsertId();
+
+        $insertFormation = $conn->prepare("INSERT INTO presence_cours VALUES (:presenceId, :coursId)");
+        $insertFormation->executeQuery(["presenceId" => $presenceId, "coursId" => $coursId]);
+
+        $insertMatiere = $conn->prepare("INSERT INTO presence_user VALUES (:presenceId, :userId)");
+        $insertMatiere->executeQuery(["presenceId" => $presenceId, "userId" => $userId]);
 
 		return 0;
 	}

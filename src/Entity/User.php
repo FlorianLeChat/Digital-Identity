@@ -53,11 +53,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Cours::class, mappedBy: 'user')]
     private Collection $cours;
 
+    #[ORM\ManyToMany(targetEntity: Presence::class, mappedBy: 'user')]
+    private Collection $presences;
+
+    #[ORM\ManyToMany(targetEntity: Absence::class, mappedBy: 'user')]
+    private Collection $absences;
+
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    private ?Formation $formation = null;
+
     public function __construct()
     {
         $this->matieres = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->cours = new ArrayCollection();
+        $this->presences = new ArrayCollection();
+        $this->absences = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -305,5 +316,71 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __toString(){ // Pour afficher les selects dans le champ formation dans easy admin
         return $this->getUserIdentifier();
+    }
+
+    /**
+     * @return Collection<int, Presence>
+     */
+    public function getPresences(): Collection
+    {
+        return $this->presences;
+    }
+
+    public function addPresence(Presence $presence): self
+    {
+        if (!$this->presences->contains($presence)) {
+            $this->presences->add($presence);
+            $presence->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePresence(Presence $presence): self
+    {
+        if ($this->presences->removeElement($presence)) {
+            $presence->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Absence>
+     */
+    public function getAbsences(): Collection
+    {
+        return $this->absences;
+    }
+
+    public function addAbsence(Absence $absence): self
+    {
+        if (!$this->absences->contains($absence)) {
+            $this->absences->add($absence);
+            $absence->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAbsence(Absence $absence): self
+    {
+        if ($this->absences->removeElement($absence)) {
+            $absence->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    public function getFormation(): ?Formation
+    {
+        return $this->formation;
+    }
+
+    public function setFormation(?Formation $formation): self
+    {
+        $this->formation = $formation;
+
+        return $this;
     }
 }

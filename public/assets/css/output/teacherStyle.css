@@ -19,4 +19,10 @@
   height: 100vh;
 }
 
+/* line 20, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/teacherStyle.scss */
+.errorForm {
+  text-align: center;
+  color: red;
+}
+
 /*# sourceMappingURL=teacherStyle.css.map */
