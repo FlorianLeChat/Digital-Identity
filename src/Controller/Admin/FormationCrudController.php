@@ -20,7 +20,7 @@ class FormationCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id'),
+            //IdField::new('id'),
             TextField::new('nom_formation'),
             //TextEditorField::new('description'),
         ];

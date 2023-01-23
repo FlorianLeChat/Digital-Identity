@@ -20,7 +20,7 @@ class MatiereCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id'),
+            //IdField::new('id'),
             TextField::new('nome_matiere'),
             AssociationField::new('user'),
             AssociationField::new('formation'),
