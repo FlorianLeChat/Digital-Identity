@@ -1,17 +1,30 @@
+<h3>Liste de vos présences</h3>
 
-    <h3>Liste de vos présence</h3>
-    {% if presences|length %}
-        <table>
-        <tr><th>Nom</th><th>prenom</th><th>token</th></tr>
-        {% for p in presences %}
-            <tr><td>{{ p.nom }}</td>
-                <td>{{ p.prenom }}</td>
-                <td>{{ p.token }}</td></tr>
-
-        {% endfor %}
-        </table>
-    {% else %}
-        <div>
-            <i>Vous n'avez jamais été présent</i>
-        </div>
-    {% endif %}
+{% if presents|length %}
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Token</th>
+            <th>Formation</th>
+            <th>Matière</th>
+            <th>Prénom enseignant</th>
+            <th>Nom enseignant</th>
+        </tr>
+            {% for present in presents %}
+                <tr>
+                    <td>{{ present.date }}</td>
+                    <td>{{ present.type }}</td>
+                    <td>{{ present.token }}</td>
+                    <td>{{ present.nom_formation }}</td>
+                    <td>{{ present.nome_matiere }}</td>
+                    <td>{{ present.firsname }}</td>
+                    <td>{{ present.lastname }}</td>
+                </tr>
+            {% endfor %}
+    </table>
+{% else %}
+    <div>
+        <i>Vous n'avez jamais été présent</i>
+    </div>
+{% endif %}

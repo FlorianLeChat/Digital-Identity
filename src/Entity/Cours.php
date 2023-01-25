@@ -37,6 +37,9 @@ class Cours
     #[ORM\ManyToMany(targetEntity: Presence::class, mappedBy: 'cours')]
     private Collection $presences;
 
+    #[ORM\Column(length: 4096)]
+    private ?string $token = null;
+
     public function __construct()
     {
         $this->matiere = new ArrayCollection();
@@ -181,6 +184,18 @@ class Cours
         if ($this->presences->removeElement($presence)) {
             $presence->removeCour($this);
         }
+
+        return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(string $token): self
+    {
+        $this->token = $token;
 
         return $this;
     }

@@ -8,6 +8,7 @@ use App\Entity\Cours;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @extends ServiceEntityRepository<Cours>
@@ -42,27 +43,81 @@ class CoursRepository extends ServiceEntityRepository
         }
     }
 
-	public function getPresents(int $userId): array
+    public function checkFormation(int $userId, int $coursId): bool
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $stmt = $conn->prepare("SELECT 1 FROM cours_formation WHERE cours_id = :cours AND formation_id IN (SELECT formation_id FROM user WHERE id = :user)");
+        $resultSet = $stmt->executeQuery(["user" => $userId, "cours" => $coursId]);
+
+        return count($resultSet->fetchAllAssociative()) > 0;
+    }
+
+	public function getPresents(int $userId, bool $teacher = false): array
 	{
 		// Récupération des élèves présents dans la (dernière) salle de cours.
 		$conn = $this->getEntityManager()->getConnection();
 
-		$query = $conn->prepare("SELECT * FROM user WHERE id IN (SELECT user_id FROM `presence_user` WHERE presence_id IN (SELECT presence_id FROM `presence_cours` WHERE cours_id IN (SELECT MAX(cours_id) FROM `cours_user` WHERE `user_id` = :id)));");
-		$result = $query->executeQuery(["id" => $userId]);
+        if ($teacher)
+        {
+            // Eleves présents pour les professeurs
+            $query = $conn->prepare("SELECT * FROM user WHERE id IN (SELECT user_id FROM `presence_user` WHERE presence_id IN (SELECT presence_id FROM `presence_cours` WHERE cours_id IN (SELECT MAX(cours_id) FROM `cours_user` WHERE `user_id` = :id)));");
+            $result = $query->executeQuery(["id" => $userId]);
 
-		return $result->fetchAllAssociative();
+            return $result->fetchAllAssociative();
+        }
+        else
+        {
+            // Présences dans les cours
+            $query = $conn->prepare('
+                SELECT cours.id, date, type, cours.token, nom_formation, nome_matiere, firsname, lastname FROM cours 
+                JOIN cours_formation ON cours.id = cours_formation.cours_id
+                JOIN formation ON cours_formation.formation_id = formation.id
+                JOIN cours_matiere ON cours.id = cours_matiere.cours_id
+                JOIN matiere ON cours_matiere.matiere_id = matiere.id
+                JOIN cours_user ON cours.id = cours_user.cours_id
+                JOIN user ON cours_user.user_id = user.id
+                JOIN presence_user ON presence_user.user_id = :id
+                JOIN presence ON presence_user.presence_id = presence.id
+                WHERE cours.id IN (SELECT cours_id FROM `presence_cours`)');
+            $result = $query->executeQuery(["id" => $userId]);
+
+            return $result->fetchAllAssociative();
+        }
 	}
 
-	/*public function getAbsents(): array
+	public function getAbsents(int $userId, bool $teacher = false): array
 	{
 		// Récupération des élèves présents dans la (dernière) salle de cours.
 		$conn = $this->getEntityManager()->getConnection();
 
-		$query = $conn->prepare("SELECT * FROM `user` WHERE roles = '[\"ROLE_STUDENT\"]' && id NOT IN(SELECT cours_id FROM cours_user WHERE cours_id = MAX(cours_id));");
-		$result = $query->executeQuery();
+        if ($teacher)
+        {
+            // Absences pour les professeurs
+            $query = $conn->prepare("SELECT * FROM `user` WHERE roles = '[\"ROLE_STUDENT\"]' && id NOT IN (SELECT user_id FROM presence_user WHERE presence_id IN (SELECT presence_id FROM presence_cours WHERE cours_id IN (SELECT MAX(cours_id) FROM cours_user)));");
+            $result = $query->executeQuery();
 
-		return $result->fetchAllAssociative();
-	}*/
+            return $result->fetchAllAssociative();
+        }
+        else
+        {
+            // Absences pour les élèves
+            $query = $conn->prepare('
+                SELECT cours.id, date, type, cours.token, nom_formation, nome_matiere, firsname, lastname FROM cours 
+                JOIN cours_formation ON cours.id = cours_formation.cours_id
+                JOIN formation ON cours_formation.formation_id = formation.id
+                JOIN cours_matiere ON cours.id = cours_matiere.cours_id
+                JOIN matiere ON cours_matiere.matiere_id = matiere.id
+                JOIN cours_user ON cours.id = cours_user.cours_id
+                JOIN user ON cours_user.user_id = user.id
+                JOIN presence_user ON presence_user.user_id = :id
+                JOIN presence ON presence_user.presence_id = presence.id
+                WHERE cours.id NOT IN (SELECT cours_id FROM `presence_cours`)');
+            $result = $query->executeQuery(["id" => $userId]);
+
+            return $result->fetchAllAssociative();
+        }
+	}
 
 	public function setState(int $coursId): void
 	{
@@ -85,7 +140,7 @@ class CoursRepository extends ServiceEntityRepository
         // Insertion du cours dans la base de données
         date_default_timezone_set("Europe/Paris");
          
-        $insertCours = $conn->prepare("INSERT INTO cours (date, type, terminé) VALUES (:date, :type, 0)");
+        $insertCours = $conn->prepare("INSERT INTO cours (date, type, terminé, token) VALUES (:date, :type, 0, 1234)");
         $insertCours->executeQuery(["date" => date('Y-m-d H:i:s'), "type" => $type]);
 
         // Récupération de l'identifiant unique du cours

@@ -1,0 +1,44 @@
+<h3>Liste de vos absences</h3>
+
+{% if absents|length %}
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Token</th>
+            <th>Formation</th>
+            <th>Matière</th>
+            <th>Prénom enseignant</th>
+            <th>Nom enseignant</th>
+            <th>Justificatif</th>
+        </tr>
+            {% for absent in absents %}
+                <tr>
+                    <td>{{ absent.date }}</td>
+                    <td>{{ absent.type }}</td>
+                    <td>{{ absent.token }}</td>
+                    <td>{{ absent.nom_formation }}</td>
+                    <td>{{ absent.nome_matiere }}</td>
+                    <td>{{ absent.firsname }}</td>
+                    <td>{{ absent.lastname }}</td>
+
+                    {% if absent.id not in justificatifs %}
+                        <td>
+                            <form id="form" enctype="multipart/form-data" method="POST" action="{{ path('download_justificatif') }}">
+                                <input id="file" type="file" name="justif" />
+                                <input type="hidden" name="coursId" value="{{ absent.id }}" />
+                                <br />
+                                <button class="submit-btn" type="submit">Télécharger</button>
+                            </form>
+                        </td>
+                    {% else %}
+                        <td>Un justificatif est déjà envoyé</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+    </table>
+{% else %}
+    <div>
+        <i>Vous n'avez jamais été absent</i>
+    </div>
+{% endif %}

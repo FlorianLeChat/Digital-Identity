@@ -1,3 +1,18 @@
-<img src="{{ qrCode }}" alt="QR code">
+<div id="qrcode"> 
+    <img src="{{ qrCode }}" alt="QR code">
+</div>
 
-<a href="{{ path('close_cours', {cours: id }) }}">Clôturer l'appel</a>
+<a id="closeCours" href="{{ path('close_cours', {cours: id }) }}">Clôturer l'appel</a>
+<style>
+    #qrCode{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 90vh;
+    }
+    #closeCours{
+        display: flex;
+        justify-content: center;
+    }
+
+</style>

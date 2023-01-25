@@ -2,13 +2,14 @@
 
 namespace App\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PresenceRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\User;
+use App\Entity\Absence;
 use App\Entity\Cours;
 use TCPDF;
 
@@ -22,7 +23,15 @@ class StudentController extends AbstractController
     {
 		if ($cours !== 0) {
 			$userRepository = $entityManager->getRepository(User::class);
-			$code = $userRepository->setPresence($this->getUser(), $cours);
+			$coursRepository = $entityManager->getRepository(Cours::class);
+
+			$user = $this->getUser();
+			$formation = $coursRepository->checkFormation($user->getId(), $cours);
+
+			if (!$formation)
+				die("Vous n'êtes pas inscrit dans cette formation !");
+
+			$code = $userRepository->setPresence($user, $cours);
 		}
 
         return $this->render('student/index.html.twig', ['cours' => $cours, 'code' => $code ?? 0]);
@@ -98,14 +107,110 @@ class StudentController extends AbstractController
     /**
      * @Route ("/liste_presence", name="student_presence")
      */
-    public function presence(PresenceRepository $rp): Response{
+    public function presence(EntityManagerInterface $entityManager): Response
+	{
         $user = $this->getUser();
-        if($user){
-            $presences = $rp->findBy(['studPresence'=>$user]);
-            return $this->render('student/listePresences.html.twig', compact('presences'));
+		$coursRepository = $entityManager->getRepository(Cours::class);
+
+        if($user)
+		{
+			$id = $user->getId();
+			
+            return $this->render('student/listePresences.html.twig', [
+				"presents" => $coursRepository->getPresents($id, false)
+			]);
         }
-        else{
+        else
+		{
             return $this->redirectToRoute('app_login');
+        }
+    }
+
+    /**
+     * @Route ("/liste_absence", name="student_absence")
+     */
+    public function absence(EntityManagerInterface $entityManager): Response
+	{
+        $user = $this->getUser();
+
+        if ($user)
+		{
+			$id = $user->getId();
+			$coursRepository = $entityManager->getRepository(Cours::class);
+
+			// Création du dossier des justificatifs.
+			$path = "data/justificatifs/$id";
+
+			if (!file_exists($path))
+			{
+				if (!mkdir($path, 0777, true)) {
+					die('Échec lors de la création des dossiers...');
+				}
+			}
+
+            return $this->render('student/listeAbsences.html.twig', [
+				"absents" => $coursRepository->getAbsents($id, false),
+				"justificatifs" => array_values(array_diff(scandir("data/justificatifs/$id/"), array('..', '.')))
+			]);
+        }
+        else
+		{
+            return $this->redirectToRoute('app_login');
+        }
+    }
+
+    /**
+     * @Route ("/download_justificatif", name="download_justificatif")
+     */
+    public function justificatif(EntityManagerInterface $entityManager): Response
+	{
+        $user = $this->getUser();
+
+        if ($user)
+		{
+			$id = $user->getId();
+			$absenceRepository = $entityManager->getRepository(Absence::class);
+
+			// On génère un chemin d'accès pour le justificatif.
+			$path = "data/justificatifs/" . $id . "/" . $_POST["coursId"];
+
+			// On récupère les informations du justificatif.
+			$file = $_FILES["justif"];
+
+			// On vérifie si un justificatif est déjà présents.
+			if (!file_exists($path))
+			{
+				// On tente de créer un dossier (si possible).
+				// En cas d'échec, une erreur est émise.
+				if (!mkdir($path, 0777, true)) {
+					die('Échec lors de la création des dossiers...');
+				}
+			}
+			else
+			{
+				// Dans le cas, on affiche une erreur disant qu'un justificatif existe déjà.
+				die('Un justificatif existe déjà pour ce cours.');
+			}
+
+			// On vérifie si le téléchargement est terminé.
+			if ($file["error"] == UPLOAD_ERR_OK)
+			{
+				// Si c'est le cas, on déplace le fichier temporaire vers son emplacement de stockage.
+				$tmp_name = $_FILES["justif"]["tmp_name"];
+				$name = basename($_FILES["justif"]["name"]);
+				
+				move_uploaded_file($tmp_name, "$path/$name");
+
+				// Insertion des informations dans la base de données.
+				$absenceRepository->insertJustificatif($_POST["coursId"], $id);
+			}
+			
+			// On redirige enfin l'utilisateur vers la liste de ses absences.
+            return $this->redirectToRoute('student_absence');
+        }
+        else
+		{
+            return $this->redirectToRoute('student_absence');
         }
     }
 }

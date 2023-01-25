@@ -18,6 +18,7 @@ use Endroid\QrCode\Writer\PngWriter;
 
 use App\Entity\Formation;
 use App\Entity\Matiere;
+use App\Entity\Absence;
 use App\Entity\Cours;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -41,8 +42,8 @@ class TeacherController extends AbstractController
             'controller_name' => 'TeacherController',
             "noms_formations" => $noms_formations,
             "noms_matieres" => $noms_matieres,
-			"eleves" => $coursRepository->getPresents($id),
-           // "absents" => $coursRepository->getAbsents($id)
+			"presents" => $coursRepository->getPresents($id, true),
+            "absents" => $coursRepository->getAbsents($id, true)
         ]);
     }
 
