@@ -1,0 +1,12 @@
+{
+	"version": 3,
+	"file": "presenceAbsenceStyle.css",
+	"sources": [
+		"../input/presenceAbsenceStyle.scss"
+	],
+	"sourcesContent": [
+		".table{\r\n    width: auto;\r\n    margin: 2rem auto 0 auto;\r\n    h3{\r\n        text-align: center;\r\n        margin-bottom: 1rem;\r\n    }\r\n    table{\r\n        border: 2px solid black;\r\n        border-collapse: collapse;\r\n    }\r\n    th, tr, td{\r\n        border: 2px solid black;\r\n        padding: 0.5rem;\r\n    }\r\n    th{\r\n        text-align: center;\r\n    }\r\n}"
+	],
+	"names": [],
+	"mappings": ";AAAA,AAAA,MAAM,CAAA;EACF,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,gBAAgB;CAgB3B;;;AAlBD,AAGI,MAHE,CAGF,EAAE,CAAA;EACE,UAAU,EAAE,MAAM;EAClB,aAAa,EAAE,IAAI;CACtB;;;AANL,AAOI,MAPE,CAOF,KAAK,CAAA;EACD,MAAM,EAAE,eAAe;EACvB,eAAe,EAAE,QAAQ;CAC5B;;;AAVL,AAWI,MAXE,CAWF,EAAE,EAXN,MAAM,CAWE,EAAE,EAXV,MAAM,CAWM,EAAE,CAAA;EACN,MAAM,EAAE,eAAe;EACvB,OAAO,EAAE,MAAM;CAClB;;;AAdL,AAeI,MAfE,CAeF,EAAE,CAAA;EACE,UAAU,EAAE,MAAM;CACrB"
+}

@@ -1,0 +1,30 @@
+/* line 1, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/presenceAbsenceStyle.scss */
+.table {
+  width: auto;
+  margin: 2rem auto 0 auto;
+}
+
+/* line 4, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/presenceAbsenceStyle.scss */
+.table h3 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* line 8, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/presenceAbsenceStyle.scss */
+.table table {
+  border: 2px solid black;
+  border-collapse: collapse;
+}
+
+/* line 12, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/presenceAbsenceStyle.scss */
+.table th, .table tr, .table td {
+  border: 2px solid black;
+  padding: 0.5rem;
+}
+
+/* line 16, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/presenceAbsenceStyle.scss */
+.table th {
+  text-align: center;
+}
+
+/*# sourceMappingURL=presenceAbsenceStyle.css.map */
