@@ -7,6 +7,7 @@ use App\Entity\Cours;
 use App\Entity\Formation;
 use App\Entity\Matiere;
 use App\Entity\Presence;
+use App\Entity\Absence;
 
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -38,7 +39,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Formations', 'fa fa-graduation-cap', Formation::class);
         yield MenuItem::linkToCrud('Matières', 'fas fa-chalkboard-teacher', Matiere::class);
         yield MenuItem::linkToCrud('Présences', 'fas fa-user', Presence::class);
-        //yield MenuItem::linkToCrud('Absences', 'fas fa-user-times', Absence::class);
+        yield MenuItem::linkToCrud('Absences', 'fas fa-user-times', Absence::class);
         
     }
 }

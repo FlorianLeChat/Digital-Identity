@@ -2,28 +2,29 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Presence;
-use App\Entity\Cours;
+use App\Entity\Absence;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 
-class PresenceCrudController extends AbstractCrudController
+class AbsenceCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Presence::class;
+        return Absence::class;
     }
 
-    
+
     public function configureFields(string $pageName): iterable
     {
         return [
-           //IdField::new('id'),
-            TextField::new('token'),
+            //IdField::new('id'),
             AssociationField::new('user'),
             AssociationField::new('cours'),
+            BooleanField::new('justification_statut'),
         ];
     }
     
