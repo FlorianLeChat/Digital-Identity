@@ -106,8 +106,8 @@ class CoursRepository extends ServiceEntityRepository
         if ($teacher)
         {
             // Absences pour les professeurs
-            $query = $conn->prepare("SELECT * FROM `user` WHERE roles = '[\"ROLE_STUDENT\"]' && id NOT IN (SELECT user_id FROM presence_user WHERE presence_id IN (SELECT presence_id FROM presence_cours WHERE cours_id IN (SELECT MAX(cours_id) FROM cours_user)));");
-            $result = $query->executeQuery();
+            $query = $conn->prepare("SELECT * FROM `user` WHERE roles = '[\"ROLE_STUDENT\"]' && id NOT IN (SELECT user_id FROM presence_user WHERE presence_id IN (SELECT presence_id FROM presence_cours WHERE cours_id IN (SELECT MAX(cours_id) FROM `cours_user` WHERE `user_id` = :id)));");
+            $result = $query->executeQuery(["id" => $userId]);
 
             return $result->fetchAllAssociative();
         }
