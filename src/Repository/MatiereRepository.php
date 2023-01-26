@@ -57,36 +57,11 @@ class MatiereRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = "SELECT nome_matiere FROM matiere WHERE id IN (
-            SELECT matiere_id FROM matiere_user WHERE user_id = :id 
+            SELECT matiere_id FROM matiere_user WHERE user_id = :id
             )" ;
         $stmt = $conn->prepare($sql);
         $resultSet = $stmt->executeQuery(["id" => $id]);
 
         return $resultSet->fetchAllAssociative();
     }
-
-//    /**
-//     * @return Matiere[] Returns an array of Matiere objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('m.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Matiere
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

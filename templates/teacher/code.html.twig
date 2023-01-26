@@ -1,18 +1,21 @@
-<div id="qrcode"> 
-    <img src="{{ qrCode }}" alt="QR code">
-</div>
+{% extends 'base.html.twig' %}
+{% block content %}
+	<div id="qrcode">
+		<img src="{{ qrCode }}" alt="QR code">
+	</div>
 
-<a id="closeCours" href="{{ path('close_cours', {cours: id }) }}">Clôturer l'appel</a>
-<style>
-    #qrCode{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 90vh;
-    }
-    #closeCours{
-        display: flex;
-        justify-content: center;
-    }
+	<a id="closeCours" href="{{ path('close_cours', {cours: uuid}) }}">Clôturer l'appel</a>
+	<style>
+		#qrCode{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 90vh;
+		}
+		#closeCours{
+			display: flex;
+			justify-content: center;
+		}
 
-</style>
+	</style>
+{% endblock %}

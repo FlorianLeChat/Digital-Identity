@@ -15,9 +15,7 @@ class Presence
     #[ORM\Column]
     private ?int $id = null;
 
-
-    
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 36)]
     private $token;
 
     #[ORM\ManyToMany(targetEntity: Cours::class, inversedBy: 'presences')]

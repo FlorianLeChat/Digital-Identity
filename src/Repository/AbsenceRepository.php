@@ -51,29 +51,4 @@ class AbsenceRepository extends ServiceEntityRepository
         $insertAbsence = $conn->prepare("INSERT INTO absence_user VALUES (:absence, :user)");
         $insertAbsence->executeQuery(["absence" => $insertId, "user" => $userId]);
     }
-
-//    /**
-//     * @return Absence[] Returns an array of Absence objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Absence
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

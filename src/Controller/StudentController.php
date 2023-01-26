@@ -3,53 +3,71 @@
 namespace App\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\PresenceRepository;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
+
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
+use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use Endroid\QrCode\Writer\PngWriter;
+
 use App\Entity\User;
 use App\Entity\Absence;
 use App\Entity\Cours;
+use App\Entity\Presence;
+
 use TCPDF;
 
 class StudentController extends AbstractController
 {
     /**
 	 * @Route("/portalStudent", name="app_student")
-     * @Route("/portalStudent/{cours}", name="app_student")
+     * @Route("/portalStudent/{uuid}", name="app_student")
      */
-    public function index(Request $request, EntityManagerInterface $entityManager, int $cours = 0): Response
+    public function index(EntityManagerInterface $entityManager, string $uuid = ""): Response
     {
-		if ($cours !== 0) {
-			$userRepository = $entityManager->getRepository(User::class);
-			$coursRepository = $entityManager->getRepository(Cours::class);
+		$userRepository = $entityManager->getRepository(User::class);
+		$coursRepository = $entityManager->getRepository(Cours::class);
 
+		$coursId = $coursRepository->findIdByUUID($uuid);
+
+		if ($coursId !== 0) {
 			$user = $this->getUser();
-			$formation = $coursRepository->checkFormation($user->getId(), $cours);
+			$formation = $coursRepository->checkFormation($user->getId(), $coursId);
 
 			if (!$formation)
 				die("Vous n'êtes pas inscrit dans cette formation !");
 
-			$code = $userRepository->setPresence($user, $cours);
+			$code = $userRepository->setPresence($user, $coursId);
 		}
 
-        return $this->render('student/index.html.twig', ['cours' => $cours, 'code' => $code ?? 0]);
+        return $this->render("student/index.html.twig", ["uuid" => $uuid, "code" => $code ?? 0]);
     }
 
-
     /**
-     * @Route ("/download_certificat/{cours}", name="download_certificat")
+     * @Route ("/download_certificat/{uuid}", name="download_certificat")
      */
-	public function downloadCertificat(EntityManagerInterface $entityManager, int $cours = 0): Response
+	public function downloadCertificat(EntityManagerInterface $entityManager, string $uuid = ""): Response
 	{
-		if ($cours !== 0) {
-			// Récupération des données du cours.
-			$coursRepository = $entityManager->getRepository(Cours::class);
-			$cours = $coursRepository->find($cours);
+		$user = $this->getUser();
 
-			$date = $cours->getDate();
-			$auteur = $cours->getUser()->getValues()[0];
+		$coursRepository = $entityManager->getRepository(Cours::class);
+		$userRepository = $entityManager->getRepository(User::class);
+
+		$coursId = $coursRepository->findIdByUUID($uuid);
+		$token = $userRepository->getPresenceToken($user->getId(), $coursId);
+
+		if ($coursId !== 0 && $token !== "")
+		{
+			// Récupération des données du cours.
+			$coursId = $coursRepository->find($coursId);
+
+			$date = $coursId->getDate();
+			$auteur = $coursId->getUser()->getValues()[0];
 
 			// Génération du PDF.
 			// Source : https://github.com/tecnickcom/TCPDF/blob/2fb1c01bc37487d1f94fe1297f8d8ad1b5c290bb/examples/example_002.php
@@ -80,15 +98,36 @@ class StudentController extends AbstractController
 			// Ajout d'une page.
 			$pdf->AddPage();
 
+			// Préparation à la création de l'image finale.
+			$writer = new PngWriter();
+
+			// Génération du QR code de vérification.
+			// Note : on encode le token en base64 pour éviter les problèmes d'encodage (https://www.php.net/manual/en/function.base64-decode.php#118244)
+			$token = base64_encode($userRepository->encryptToken($token));
+			$token = str_replace(array('+', '/'), array('-', '_'), $token);
+			$token = rtrim($token, '=');
+
+			$qrCode = QrCode::create('http://127.0.0.1:8000/check_certificat/' . $token)
+				->setEncoding(new Encoding('UTF-8'))
+				->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
+				->setSize(300)
+				->setMargin(10)
+				->setRoundBlockSizeMode(new RoundBlockSizeModeMargin())
+				->setForegroundColor(new Color(0, 0, 0))
+				->setBackgroundColor(new Color(255, 255, 255));
+
+			$result = $writer->write($qrCode);
+			$writer->validateResult($result, 'http://127.0.0.1:8000/check_certificat/' . $token);
+
 			// Insertion du texte.
 			$text = <<<EOD
 			Certificat de présence au cours :
 
-			Prénom : {$this->getUser()->getFirsname()}
-			Nom : {$this->getUser()->getLastname()}
-			Formation : {$cours->getFormation()->getValues()[0]->getNomFormation()}
-			Matière : {$cours->getMatiere()->getValues()[0]->getNomeMatiere()}
-			Type : {$cours->getType()}
+			Prénom : {$user->getFirsname()}
+			Nom : {$user->getLastname()}
+			Formation : {$coursId->getFormation()->getValues()[0]->getNomFormation()}
+			Matière : {$coursId->getMatiere()->getValues()[0]->getNomeMatiere()}
+			Type : {$coursId->getType()}
 			Date : {$date->format("d/m/Y")}
 			Heure : {$date->format("H:i")}
 			Enseignant : {$auteur->getFirsname()} {$auteur->getLastname()}
@@ -96,12 +135,36 @@ class StudentController extends AbstractController
 
 			// Écriture du texte sur le document.
 			$pdf->Write(0, $text, "", 0, "C", true, 0, false, false, 0);
+			$pdf->writeHTML("<br /><h2>QR Code de contrôle</h2><img src=\"" . $result->getDataUri() . "\" alt=\"QR code\">", true, false, true, false, '');
 
 			// Fermeture et affichage du document PDF.
 			$pdf->Output("certificat.pdf", "I");
 		}
 
 		return $this->redirectToRoute('app_student');
+	}
+
+    /**
+     * @Route ("/check_certificat/{token}", name="check_certificat", requirements: ['token' => '.+'])
+     */
+	public function check_certificat(EntityManagerInterface $entityManager, string $token = ""): Response
+	{
+		if ($token !== "")
+		{
+			$userRepository = $entityManager->getRepository(User::class);
+			$presenceRepository = $entityManager->getRepository(Presence::class);
+
+			$decryptToken = $userRepository->decryptToken(base64_decode(str_replace(array("-", "_"), array("+", "/"), $token)));
+
+            return $this->render("student/checkCertificate.html.twig", [
+				"user" => $presenceRepository->findUserByUUID($decryptToken),
+				"cours" => $presenceRepository->findCoursByUUID($decryptToken),
+				"phrase" => $token,
+				"token" => $decryptToken,
+			]);
+		}
+
+		return $this->redirectToRoute("app_student");
 	}
 
     /**
@@ -112,10 +175,10 @@ class StudentController extends AbstractController
         $user = $this->getUser();
 		$coursRepository = $entityManager->getRepository(Cours::class);
 
-        if($user)
+        if ($user)
 		{
 			$id = $user->getId();
-			
+
             return $this->render('student/listePresences.html.twig', [
 				"presents" => $coursRepository->getPresents($id, false)
 			]);
@@ -198,13 +261,13 @@ class StudentController extends AbstractController
 				// Si c'est le cas, on déplace le fichier temporaire vers son emplacement de stockage.
 				$tmp_name = $_FILES["justif"]["tmp_name"];
 				$name = basename($_FILES["justif"]["name"]);
-				
+
 				move_uploaded_file($tmp_name, "$path/$name");
 
 				// Insertion des informations dans la base de données.
 				$absenceRepository->insertJustificatif($_POST["coursId"], $id);
 			}
-			
+
 			// On redirige enfin l'utilisateur vers la liste de ses absences.
             return $this->redirectToRoute('student_absence');
         }

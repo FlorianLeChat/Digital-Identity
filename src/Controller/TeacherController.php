@@ -18,7 +18,6 @@ use Endroid\QrCode\Writer\PngWriter;
 
 use App\Entity\Formation;
 use App\Entity\Matiere;
-use App\Entity\Absence;
 use App\Entity\Cours;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -27,8 +26,7 @@ class TeacherController extends AbstractController
     #[Route('/portalTeacher', name: 'app_teacher')]
     public function index(EntityManagerInterface $entityManager): Response
     {
-        $user = $this->getUser();
-        $id = $user->getId();
+        $id = $this->getUser()->getId();
 
         $formationRepository = $entityManager->getRepository(Formation::class);
         $noms_formations = $formationRepository->getAll();
@@ -50,11 +48,14 @@ class TeacherController extends AbstractController
     /**
     * @Route("/closeCours/{cours}", name="close_cours")
     */
-    public function closeCours(EntityManagerInterface $entityManager, int $cours = 0): Response
+    public function closeCours(EntityManagerInterface $entityManager, string $uuid = ""): Response
     {
-		if ($cours !== 0) {
+		$coursRepository = $entityManager->getRepository(Cours::class);
+		$coursId = $coursRepository->findIdByUUID($uuid);
+
+		if ($coursId !== 0) {
 			$coursRepository = $entityManager->getRepository(Cours::class);
-			$coursRepository->setState($cours);
+			$coursRepository->setState($coursId);
 		}
 
         return $this->redirectToRoute('app_teacher');
@@ -78,13 +79,13 @@ class TeacherController extends AbstractController
         $type = $request->request->get("typeCours");
 
         // Insertion dans la base de données
-		$coursId = $coursRepository->insertOne($entityManager, $id, $formation, $matiere, $type);
+		$uuid = $coursRepository->insertOne($entityManager, $id, $formation, $matiere, $type);
 
 		// Préparation à la création de l'image finale.
         $writer = new PngWriter();
 
         // Génération du QR code.
-        $qrCode = QrCode::create('http://127.0.0.1:8000/portalStudent/' . $coursId)
+        $qrCode = QrCode::create('http://127.0.0.1:8000/portalStudent/' . $uuid)
             ->setEncoding(new Encoding('UTF-8'))
             ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
             ->setSize(300)
@@ -101,10 +102,10 @@ class TeacherController extends AbstractController
         $result = $writer->write($qrCode, null, $label);
 
         // Validation du résultat de la création de l'image.
-        $writer->validateResult($result, 'http://127.0.0.1:8000/portalStudent/' . $coursId);
+        $writer->validateResult($result, 'http://127.0.0.1:8000/portalStudent/' . $uuid);
 
         return $this->render('teacher/code.html.twig', [
-			'id' => $coursId,
+			'uuid' => $uuid,
             'qrCode' => $result->getDataUri()
         ]);
     }
