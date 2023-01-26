@@ -13,6 +13,7 @@
                     <th>Matière</th>
                     <th>Prénom enseignant</th>
                     <th>Nom enseignant</th>
+                    <th>Certificat de présence</th>
                 </tr>
                     {% for present in presents %}
                         <tr>
@@ -23,6 +24,7 @@
                             <td>{{ present.nome_matiere }}</td>
                             <td>{{ present.firsname }}</td>
                             <td>{{ present.lastname }}</td>
+                            <td><a href="{{ path('download_certificat', {uuid: present.token}) }}">Télécharger</a></td>
                         </tr>
                     {% endfor %}
             </table>
