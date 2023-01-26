@@ -83,16 +83,15 @@ class CoursRepository extends ServiceEntityRepository
         {
             // Présences dans les cours (élèves)
             $query = $conn->prepare('
-                SELECT cours.id, date, type, cours.token, nom_formation, nome_matiere, firsname, lastname FROM cours
-                JOIN cours_formation ON cours.id = cours_formation.cours_id
-                JOIN formation ON cours_formation.formation_id = formation.id
-                JOIN cours_matiere ON cours.id = cours_matiere.cours_id
-                JOIN matiere ON cours_matiere.matiere_id = matiere.id
-                JOIN cours_user ON cours.id = cours_user.cours_id
-                JOIN user ON cours_user.user_id = user.id
-                JOIN presence_user ON presence_user.user_id = :id
-                JOIN presence ON presence_user.presence_id = presence.id
-                WHERE cours.id IN (SELECT cours_id FROM `presence_cours`)');
+				SELECT cours.id, date, type, cours.token, nom_formation, nome_matiere, firsname, lastname FROM cours
+				JOIN cours_formation ON cours.id = cours_formation.cours_id
+				JOIN formation ON cours_formation.formation_id = formation.id
+				JOIN cours_matiere ON cours.id = cours_matiere.cours_id
+				JOIN matiere ON cours_matiere.matiere_id = matiere.id
+				JOIN cours_user ON cours.id = cours_user.cours_id
+				JOIN user ON cours_user.user_id = user.id
+				WHERE cours.id IN (SELECT cours_id FROM `presence_cours` WHERE presence_id IN (SELECT presence_id FROM `presence_user` WHERE `user_id` = :id))'
+			);
             $result = $query->executeQuery(["id" => $userId]);
 
             return $result->fetchAllAssociative();
@@ -116,16 +115,15 @@ class CoursRepository extends ServiceEntityRepository
         {
             // Absences pour les élèves
             $query = $conn->prepare('
-                SELECT cours.id, date, type, cours.token, nom_formation, nome_matiere, firsname, lastname FROM cours
-                JOIN cours_formation ON cours.id = cours_formation.cours_id
-                JOIN formation ON cours_formation.formation_id = formation.id
-                JOIN cours_matiere ON cours.id = cours_matiere.cours_id
-                JOIN matiere ON cours_matiere.matiere_id = matiere.id
-                JOIN cours_user ON cours.id = cours_user.cours_id
-                JOIN user ON cours_user.user_id = user.id
-                JOIN presence_user ON presence_user.user_id = :id
-                JOIN presence ON presence_user.presence_id = presence.id
-                WHERE cours.id NOT IN (SELECT cours_id FROM `presence_cours`)');
+				SELECT cours.id, date, type, cours.token, nom_formation, nome_matiere, firsname, lastname FROM cours
+				JOIN cours_formation ON cours.id = cours_formation.cours_id
+				JOIN formation ON cours_formation.formation_id = formation.id
+				JOIN cours_matiere ON cours.id = cours_matiere.cours_id
+				JOIN matiere ON cours_matiere.matiere_id = matiere.id
+				JOIN cours_user ON cours.id = cours_user.cours_id
+				JOIN user ON cours_user.user_id = user.id
+				WHERE cours.id IN (SELECT cours_id FROM `presence_cours` WHERE presence_id IN (SELECT presence_id FROM `presence_user` WHERE `user_id` = :id))'
+			);
             $result = $query->executeQuery(["id" => $userId]);
 
             return $result->fetchAllAssociative();
