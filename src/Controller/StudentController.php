@@ -135,7 +135,7 @@ class StudentController extends AbstractController
 
 			// Écriture du texte sur le document.
 			$pdf->Write(0, $text, "", 0, "C", true, 0, false, false, 0);
-			$pdf->writeHTML("<br /><h2>QR Code de contrôle</h2><img src=\"" . $result->getDataUri() . "\" alt=\"QR code\">", true, false, true, false, "");
+			$pdf->writeHTML("<br /><h2>QR Code de contrôle</h2><img src=\"" . $result->getDataUri() . "\" alt=\"QR code\"><br /><a href=\"http://127.0.0.1:8000/check_certificat/{$token}\">URL de vérification</a>", true, false, true, false, "");
 
 			// Fermeture et affichage du document PDF.
 			$pdf->Output("certificat.pdf", "I");
@@ -145,7 +145,7 @@ class StudentController extends AbstractController
 	}
 
     /**
-     * @Route ("/check_certificat/{token}", name="check_certificat", requirements: ['token' => '.+'])
+     * @Route ("/check_certificat/{token}", name="check_certificat")
      */
 	public function check_certificat(EntityManagerInterface $entityManager, string $token = ""): Response
 	{

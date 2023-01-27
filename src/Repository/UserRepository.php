@@ -195,14 +195,14 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 		return 0;
 	}
 
-	public function getPresenceToken(int $coursId): string
+	public function getPresenceToken(int $userId, int $coursId): string
 	{
 		// Récupération de la connexion à la base de données.
 		$conn = $this->getEntityManager()->getConnection();
 
 		// Récupération du token de présence.
-		$getPresenceToken = $conn->prepare("SELECT token FROM presence WHERE id = :id");
-		$resultGetPresenceToken = $getPresenceToken->executeQuery(["id" => $coursId]);
+		$getPresenceToken = $conn->prepare("SELECT token from presence WHERE id IN (SELECT presence_id FROM presence_cours WHERE presence_id IN (SELECT presence_id FROM presence_user WHERE user_id = :user) AND cours_id = :cours)");
+		$resultGetPresenceToken = $getPresenceToken->executeQuery(["user" => $userId, "cours" => $coursId]);
 
 		$token = $resultGetPresenceToken->fetch();
 
