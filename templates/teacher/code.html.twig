@@ -3,7 +3,7 @@
 		<img src="{{ qrCode }}" alt="QR code">
 	</div>
 
-	<a id="closeCours" href="{{ path('close_cours', {cours: uuid}) }}">Clôturer l'appel</a>
+	<a id="closeCours" href="{{ path('close_cours', {uuid: uuid}) }}">Clôturer l'appel</a>
 	<style>
 		#qrCode{
 			display: flex;

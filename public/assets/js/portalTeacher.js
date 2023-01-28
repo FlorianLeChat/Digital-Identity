@@ -34,4 +34,41 @@ $( document ).ready( function ()
 		$( "#liste2" ).fadeIn( 1000 );
 		$( "#liste2" ).css( { "align-items": "left", "height": "10rem" } );
 	} );
+
+
+	$( "button[name = \"generateQrCode\"]" ).on("click", function()
+		{
+			const formation = $( "select[name = 'formation']" ).val();
+			const matiere = $( "select[name = 'matiere']" ).val();
+			const typeCours = $( "select[name = 'typeCours']" ).val();
+
+			// Vérification des champs formulaires
+			if ($("#formation option:selected").index() == 0)
+				{
+					$("#error1").text("Veuillez choisir une formation");
+					return false;
+				}
+			else if ($("#matiere option:selected").index() == 0)
+				{
+					$("#error1").text("");
+					$("#error2").text("Veuillez choisir une matière");
+					return false;
+				}
+			else if ($("#typeCours option:selected").index() == 0)
+				{
+					$("#error2").text("");
+					$("#error3").text("Veuillez choisir le type de cours");
+					return false;
+				}
+			else{
+				return true;
+			}
+		})
+			// $( "button[name = \"generateQrCode\"]" ).on("click", function()
+			// {
+			// 	checkForm();
+			// })
+			
+			
+			
 } );

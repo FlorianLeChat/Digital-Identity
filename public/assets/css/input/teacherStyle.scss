@@ -4,11 +4,6 @@
     margin: 2rem auto 2rem auto;
 }
 
-#generateQrCode{
-    width: 50%;
-    margin: 0 auto;
-}
-
 #boutons{
     margin: 0 15rem;
     display: flex;
@@ -17,8 +12,20 @@
     height: 100vh;
 }
 
-.errorForm{
-    text-align: center;
-    color: red;
+#generateQrCode{
+    width: 50%;
+    margin: 0 auto;
+    .form-group{
+        label{
+            margin-top: 1rem;
+        }
+        #error1, #error2, #error3{
+            margin-top: 0.5rem;
+            text-align: center;
+            color: red;
+        }
+    }
+    
 }
+
 

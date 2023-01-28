@@ -36,7 +36,9 @@
 <form id="generateQrCode" method="POST" action="/generate_qr_code" style="display:none">
   <div class="form-group">
     <label for="formation">Sélectionner une formation</label>
+    <div id="error1"></div>
     <select class="form-control" id="formation" name="formation"  >
+      <option></option>
       {% for noms_formation in noms_formations %}
         <option>{{noms_formation.nom_formation}}</option>
       {% endfor %}
@@ -44,7 +46,9 @@
   </div>
   <div class="form-group">
     <label for="matiere">Sélectionner une matiere</label>
-    <select multiple class="form-control" id="matiere" name="matiere">
+    <div  id="error2"></div>
+    <select class="form-control" id="matiere" name="matiere">
+      <option></option>
     {% for noms_matiere in noms_matieres %}
       <option>{{noms_matiere.nome_matiere}} </option>
     {% endfor %}
@@ -52,7 +56,9 @@
   </div>
   <div class="form-group">
     <label for="typeCours">Sélectionner le type du cours</label>
-    <select multiple class="form-control" id="typeCours" name="typeCours">
+    <div id="error3"></div>
+    <select class="form-control" id="typeCours" name="typeCours">
+        <option></option>
         <option>CM</option>
         <option>TD</option>
         <option>TP</option>
@@ -61,6 +67,7 @@
   <div class="form-group">
     <label for="numGroupe">Sélectionner le numéro du groupe TD/TP</label>
     <select multiple class="form-control" id="numGroupe" name="numGroupe">
+        <option></option>
         <option>1</option>
         <option>2</option>
         <option>3</option>
@@ -69,7 +76,7 @@
     </select>
   </div>
   <div class="generateCode">
-    <button type="submit" class="btn btn-primary">Générer un qr code</button>
+    <button type="submit" class="btn btn-primary" name="generateQrCode">Générer un qr code</button>
     {# <a href="{{ path('generate_code') }}" class="btn btn-primary">Générer un code</a> #}
 </div>
 </form>
