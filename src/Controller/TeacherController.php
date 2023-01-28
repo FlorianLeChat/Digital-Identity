@@ -46,7 +46,7 @@ class TeacherController extends AbstractController
     }
 
     /**
-    * @Route("/closeCours/{cours}", name="close_cours")
+    * @Route("/closeCours/{uuid}", name="close_cours")
     */
     public function closeCours(EntityManagerInterface $entityManager, string $uuid = ""): Response
     {

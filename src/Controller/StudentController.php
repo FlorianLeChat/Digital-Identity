@@ -39,7 +39,7 @@ class StudentController extends AbstractController
 			$address = $_SERVER["REMOTE_ADDR"];
 			$hostname = gethostbyaddr($address);
 
-			if ($address !== "localhost" && !str_contains($hostname, "unice.fr"))
+			if ($address !== "127.0.0.1" && !str_contains($hostname, "unice.fr"))
 			{
 				// On vérifie que l'utilisateur est bien sur le réseau universitaire.
 				die("Vous n'êtes pas sur le réseau de l'Université Côte d'Azur.");

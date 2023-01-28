@@ -167,7 +167,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         // Identifiant de l'utilisateur
         $userId = $user->getId();
 
-		// Vérification de si le cours est terminé
+		// Vérification de la présence de l'utilisateur dans le cours.
         $checkPresent = $conn->prepare("SELECT 1 FROM presence_user WHERE user_id = :userId AND presence_id IN (SELECT presence_id FROM presence_cours WHERE cours_id = :coursId)");
         $resultCheckPresent = $checkPresent->executeQuery(["userId" => $userId, "coursId" => $coursId]);
 
