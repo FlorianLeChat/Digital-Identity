@@ -53,8 +53,7 @@ class PresenceRepository extends ServiceEntityRepository
 			JOIN matiere ON cours_matiere.matiere_id = matiere.id
 			JOIN cours_user ON cours.id = cours_user.cours_id
 			JOIN user ON cours_user.user_id = user.id
-			JOIN presence ON :token = presence.token
-			WHERE cours.id IN (SELECT cours_id FROM `presence_cours`)');
+			WHERE cours.id IN (SELECT cours_id FROM `presence_cours` WHERE presence_id IN (SELECT id FROM presence WHERE token = :token))');
 		$result = $query->executeQuery(["token" => $uuid]);
 		$result = $result->fetchAssociative();
 
