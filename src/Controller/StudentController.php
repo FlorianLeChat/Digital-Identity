@@ -36,6 +36,15 @@ class StudentController extends AbstractController
 		$coursId = $coursRepository->findIdByUUID($uuid);
 
 		if ($coursId !== 0) {
+			$address = $_SERVER["REMOTE_ADDR"];
+			$hostname = gethostbyaddr($address);
+
+			if ($address !== "localhost" && !str_contains($hostname, "unice.fr"))
+			{
+				// On vérifie que l'utilisateur est bien sur le réseau universitaire.
+				die("Vous n'êtes pas sur le réseau de l'Université Côte d'Azur.");
+			}
+
 			$user = $this->getUser();
 			$formation = $coursRepository->checkFormation($user->getId(), $coursId);
 
