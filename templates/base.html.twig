@@ -8,6 +8,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="{{ asset('assets/css/output/baseStyle.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/output/teacherStyle.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/output/studentStyle.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/output/presenceAbsenceStyle.css') }}">
 
         <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
@@ -23,7 +24,13 @@
     </head>
     <body>
         <nav>
-            <img src="{{asset('assets/images/logo_oser_creer.png')}}" id="logo"/>
+            {# Logo cliquable redirige vers la route actuelle #}
+            {% if is_granted('ROLE_TEACHER') == false %}
+            <a href="{{ path('app_student') }}"><img src="{{asset('assets/images/logo_oser_creer.png')}}" id="logo"/></a>
+            {% endif %}
+            {% if is_granted('ROLE_STUDENT') == false %}
+            <a href="{{ path('app_teacher') }}"><img src="{{asset('assets/images/logo_oser_creer.png')}}" id="logo"/></a>
+            {% endif %}
             <div class="onglets">
                 {# <a href="#moncompte" ><b>LISTE DES PRESENTS</b></a> #}
                 <a href="{{ path('app_logout') }}"><b>DECONNEXION</b></a>

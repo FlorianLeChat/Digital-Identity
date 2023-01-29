@@ -1,0 +1,12 @@
+{
+	"version": 3,
+	"file": "studentStyle.css",
+	"sources": [
+		"../input/studentStyle.scss"
+	],
+	"sourcesContent": [
+		".row{\r\n    div{\r\n        margin-top: 2rem;\r\n        button{\r\n            margin-top: 1rem;\r\n            a{\r\n                text-decoration: none;\r\n            }\r\n        }\r\n        button:first-child{\r\n            margin-right: 3rem;\r\n        }\r\n        button:last-child{\r\n            margin-left: 3rem;\r\n        }\r\n        \r\n    }\r\n}\r\n.row + div{\r\n    width: auto;\r\n    margin: 6rem auto;\r\n    p:first-child{\r\n        color: green;\r\n        font-weight: 600;\r\n        text-align: center;\r\n    }\r\n    p:last-child{\r\n        color: red;\r\n        font-weight: 600;\r\n        text-align: center;\r\n    }\r\n    button{\r\n        a{\r\n            color: white;\r\n            text-decoration: none;\r\n        }\r\n    }\r\n}\r\n\r\n#checkCertificate{\r\n    margin: 1.5rem;\r\n}\r\n\r\n"
+	],
+	"names": [],
+	"mappings": ";AAAA,AACI,IADA,CACA,GAAG,CAAA;EACC,UAAU,EAAE,IAAI;CAcnB;;;AAhBL,AAGQ,IAHJ,CACA,GAAG,CAEC,MAAM,CAAA;EACF,UAAU,EAAE,IAAI;CAInB;;;AART,AAKY,IALR,CACA,GAAG,CAEC,MAAM,CAEF,CAAC,CAAA;EACG,eAAe,EAAE,IAAI;CACxB;;;AAPb,AASQ,IATJ,CACA,GAAG,CAQC,MAAM,AAAA,YAAY,CAAA;EACd,YAAY,EAAE,IAAI;CACrB;;;AAXT,AAYQ,IAZJ,CACA,GAAG,CAWC,MAAM,AAAA,WAAW,CAAA;EACb,WAAW,EAAE,IAAI;CACpB;;;AAIT,AAAA,IAAI,GAAG,GAAG,CAAA;EACN,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,SAAS;CAiBpB;;;AAnBD,AAGI,IAHA,GAAG,GAAG,CAGN,CAAC,AAAA,YAAY,CAAA;EACT,KAAK,EAAE,KAAK;EACZ,WAAW,EAAE,GAAG;EAChB,UAAU,EAAE,MAAM;CACrB;;;AAPL,AAQI,IARA,GAAG,GAAG,CAQN,CAAC,AAAA,WAAW,CAAA;EACR,KAAK,EAAE,GAAG;EACV,WAAW,EAAE,GAAG;EAChB,UAAU,EAAE,MAAM;CACrB;;;AAZL,AAcQ,IAdJ,GAAG,GAAG,CAaN,MAAM,CACF,CAAC,CAAA;EACG,KAAK,EAAE,KAAK;EACZ,eAAe,EAAE,IAAI;CACxB;;;AAIT,AAAA,iBAAiB,CAAA;EACb,MAAM,EAAE,MAAM;CACjB"
+}

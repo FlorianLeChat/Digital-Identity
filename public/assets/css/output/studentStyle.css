@@ -1,0 +1,57 @@
+/* line 2, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/studentStyle.scss */
+.row div {
+  margin-top: 2rem;
+}
+
+/* line 4, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/studentStyle.scss */
+.row div button {
+  margin-top: 1rem;
+}
+
+/* line 6, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/studentStyle.scss */
+.row div button a {
+  text-decoration: none;
+}
+
+/* line 10, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/studentStyle.scss */
+.row div button:first-child {
+  margin-right: 3rem;
+}
+
+/* line 13, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/studentStyle.scss */
+.row div button:last-child {
+  margin-left: 3rem;
+}
+
+/* line 19, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/studentStyle.scss */
+.row + div {
+  width: auto;
+  margin: 6rem auto;
+}
+
+/* line 22, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/studentStyle.scss */
+.row + div p:first-child {
+  color: green;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* line 27, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/studentStyle.scss */
+.row + div p:last-child {
+  color: red;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* line 33, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/studentStyle.scss */
+.row + div button a {
+  color: white;
+  text-decoration: none;
+}
+
+/* line 40, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/studentStyle.scss */
+#checkCertificate {
+  margin: 1.5rem;
+}
+
+/*# sourceMappingURL=studentStyle.css.map */

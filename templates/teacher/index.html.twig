@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello TeacherController!{% endblock %}
+{% block title %}Espace enseignant{% endblock %}
 
 {% block content %}
 
@@ -33,7 +33,7 @@
 </div>
 
 
-<form id="generateQrCode" method="POST" action="/generate_qr_code" style="display:none">
+<form id="generateQrCode" method="POST" action="/generate_qr_code" target= "_blank" style="display:none">
   <div class="form-group">
     <label for="formation">Sélectionner une formation</label>
     <div id="error1"></div>
@@ -76,7 +76,7 @@
     </select>
   </div>
   <div class="generateCode">
-    <button type="submit" class="btn btn-primary" name="generateQrCode">Générer un qr code</button>
+    <button type="submit" class="btn btn-primary" name="generateQrCode">Générer un QR Code</button>
     {# <a href="{{ path('generate_code') }}" class="btn btn-primary">Générer un code</a> #}
 </div>
 </form>

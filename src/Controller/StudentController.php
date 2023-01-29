@@ -213,16 +213,9 @@ class StudentController extends AbstractController
 			// Création du dossier des justificatifs.
 			$path = "data/justificatifs/$id";
 
-			if (!file_exists($path))
-			{
-				if (!mkdir($path, 0777, true)) {
-					die('Échec lors de la création des dossiers...');
-				}
-			}
-
-            return $this->render('student/listeAbsences.html.twig', [
+            return $this->render("student/listeAbsences.html.twig", [
 				"absents" => $coursRepository->getAbsents($id, false),
-				"justificatifs" => array_values(array_diff(scandir("data/justificatifs/$id/"), array('..', '.')))
+				"justificatifs" => file_exists($path) ? array_values(array_diff(scandir($path), array("..", "."))) : []
 			]);
         }
         else
@@ -244,29 +237,29 @@ class StudentController extends AbstractController
 			$absenceRepository = $entityManager->getRepository(Absence::class);
 
 			// On génère un chemin d'accès pour le justificatif.
-			$path = "data/justificatifs/" . $id . "/" . $_POST["coursId"];
+			$path = "data/justificatifs/$id/" . $_POST["coursId"];
 
 			// On récupère les informations du justificatif.
 			$file = $_FILES["justif"];
 
-			// On vérifie si un justificatif est déjà présents.
-			if (!file_exists($path))
-			{
-				// On tente de créer un dossier (si possible).
-				// En cas d'échec, une erreur est émise.
-				if (!mkdir($path, 0777, true)) {
-					die('Échec lors de la création des dossiers...');
-				}
-			}
-			else
-			{
-				// Dans le cas, on affiche une erreur disant qu'un justificatif existe déjà.
-				die('Un justificatif existe déjà pour ce cours.');
-			}
-
 			// On vérifie si le téléchargement est terminé.
 			if ($file["error"] == UPLOAD_ERR_OK)
 			{
+				// On vérifie si un justificatif est déjà présent.
+				if (!file_exists($path))
+				{
+					// On tente de créer un dossier (si possible).
+					// En cas d'échec, une erreur est émise.
+					if (!mkdir($path, 0777, true)) {
+						die("Échec lors de la création des dossiers...");
+					}
+				}
+				else
+				{
+					// Dans le cas, on affiche une erreur disant qu'un justificatif existe déjà.
+					die("Un justificatif existe déjà pour ce cours.");
+				}
+
 				// Si c'est le cas, on déplace le fichier temporaire vers son emplacement de stockage.
 				$tmp_name = $_FILES["justif"]["tmp_name"];
 				$name = basename($_FILES["justif"]["name"]);

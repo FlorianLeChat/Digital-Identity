@@ -27,4 +27,63 @@
   text-align: center;
 }
 
+/* line 19, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/presenceAbsenceStyle.scss */
+.table td {
+  text-align: center;
+}
+
+/* line 22, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/presenceAbsenceStyle.scss */
+.table td button a {
+  color: white;
+  text-decoration: none;
+}
+
+/* line 28, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/presenceAbsenceStyle.scss */
+.table td form input[name="justif"] {
+  margin-bottom: 0.5rem;
+}
+
+/** STYLE SMARTPHONE **/
+@media (hover: none), (max-width: 860px) {
+  /* line 38, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/presenceAbsenceStyle.scss */
+  .table {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  /* line 43, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/presenceAbsenceStyle.scss */
+  table thead {
+    display: none;
+  }
+  /* line 47, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/presenceAbsenceStyle.scss */
+  table,
+  tbody,
+  tr,
+  td {
+    display: block;
+    width: 100%;
+    text-align: right;
+  }
+  /* line 55, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/presenceAbsenceStyle.scss */
+  tr {
+    margin-bottom: 15px;
+  }
+  /* line 58, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/presenceAbsenceStyle.scss */
+  td {
+    padding-left: 50%;
+    position: relative;
+  }
+  /* line 62, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/presenceAbsenceStyle.scss */
+  .table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    width: 50%;
+    padding-left: 15px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: left;
+  }
+}
+
 /*# sourceMappingURL=presenceAbsenceStyle.css.map */

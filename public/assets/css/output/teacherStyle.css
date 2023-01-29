@@ -11,20 +11,21 @@
   justify-content: space-around;
   align-items: center;
   height: 100vh;
+  padding: 3.5rem 4rem;
 }
 
-/* line 15, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/teacherStyle.scss */
+/* line 16, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/teacherStyle.scss */
 #generateQrCode {
   width: 50%;
   margin: 0 auto;
 }
 
-/* line 19, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/teacherStyle.scss */
+/* line 20, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/teacherStyle.scss */
 #generateQrCode .form-group label {
   margin-top: 1rem;
 }
 
-/* line 22, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/teacherStyle.scss */
+/* line 23, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/teacherStyle.scss */
 #generateQrCode .form-group #error1, #generateQrCode .form-group #error2, #generateQrCode .form-group #error3 {
   margin-top: 0.5rem;
   text-align: center;

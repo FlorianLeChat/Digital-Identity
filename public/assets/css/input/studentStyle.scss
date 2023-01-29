@@ -1,0 +1,43 @@
+.row{
+    div{
+        margin-top: 2rem;
+        button{
+            margin-top: 1rem;
+            a{
+                text-decoration: none;
+            }
+        }
+        button:first-child{
+            margin-right: 3rem;
+        }
+        button:last-child{
+            margin-left: 3rem;
+        }
+        
+    }
+}
+.row + div{
+    width: auto;
+    margin: 6rem auto;
+    p:first-child{
+        color: green;
+        font-weight: 600;
+        text-align: center;
+    }
+    p:last-child{
+        color: red;
+        font-weight: 600;
+        text-align: center;
+    }
+    button{
+        a{
+            color: white;
+            text-decoration: none;
+        }
+    }
+}
+
+#checkCertificate{
+    margin: 1.5rem;
+}
+

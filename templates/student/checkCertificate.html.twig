@@ -1,32 +1,34 @@
 {% extends 'base.html.twig' %}
 {% block content %}
-    {% if user|length > 0 and cours|length > 0 %}
-		<h1>Validation de la présence</h1>
+	<div id="checkCertificate">
+		{% if user|length > 0 and cours|length > 0 %}
+			<h1>Validation de la présence</h1>
 
-		<p>Le jeton de validation transmis est intègre et valide !</p>
+			<p>Le jeton de validation transmis est intègre et valide !</p>
 
-		<u>Informations du compte :</u>
-		<ul>
-			<li>Adresse électronique : {{ user.email }}</li>
-			<li>Jeton de validation : {{ token }}</li>
-			<li>Phrase de validation : {{ phrase }}</li>
-		</ul>
+			<u>Informations du compte :</u>
+			<ul>
+				<li>Adresse électronique : {{ user.email }}</li>
+				<li>Jeton de validation : {{ token }}</li>
+				<li>Phrase de validation : {{ phrase }}</li>
+			</ul>
 
-		<u>Informations du cours :</u>
-		<ul>
-			<li>Date : {{ cours.date }}</li>
-			<li>Type : {{ cours.type }}</li>
-			<li>Jeton de création : {{ cours.token }}</li>
-			<li>Nom de la formation : {{ cours.nom_formation }}</li>
-			<li>Nom de la matière : {{ cours.nome_matiere }}</li>
-			<li>Prénom de l'enseignant : {{ cours.firsname }}</li>
-			<li>Nom de famille de l'enseignant : {{ cours.lastname }}</li>
-		</ul>
-	{% else %}
-		<h1>ERREUR !</h1>
+			<u>Informations du cours :</u>
+			<ul>
+				<li>Date : {{ cours.date }}</li>
+				<li>Type : {{ cours.type }}</li>
+				<li>Jeton de création : {{ cours.token }}</li>
+				<li>Nom de la formation : {{ cours.nom_formation }}</li>
+				<li>Nom de la matière : {{ cours.nome_matiere }}</li>
+				<li>Prénom de l'enseignant : {{ cours.firsname }}</li>
+				<li>Nom de famille de l'enseignant : {{ cours.lastname }}</li>
+			</ul>
+		{% else %}
+			<h1>ERREUR !</h1>
 
-		<p>Le jeton de validation transmis est falsifié ou invalide !</p>
+			<p>Le jeton de validation transmis est falsifié ou invalide !</p>
 
-		<i>Attention, la falsification d'informations peut être considérée comme une tentative de fraude et être passible de sanctions disciplinaires.</i>
-	{% endif %}
+			<i>Attention, la falsification d'informations peut être considérée comme une tentative de fraude et être passible de sanctions disciplinaires.</i>
+		{% endif %}
+	</div>
 {% endblock %}

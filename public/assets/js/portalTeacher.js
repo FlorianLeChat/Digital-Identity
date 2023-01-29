@@ -61,6 +61,7 @@ $( document ).ready( function ()
 					return false;
 				}
 			else{
+				location.reload();
 				return true;
 			}
 		})

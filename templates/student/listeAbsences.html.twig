@@ -1,37 +1,41 @@
 {% extends 'base.html.twig' %}
+{% block title %}Mes absences{% endblock %}
 {% block content %}
     <div class="table">
         <h3>Liste de vos absences</h3>
 
         {% if absents|length %}
             <table>
-                <tr>
-                    <th>Date</th>
-                    <th>Type</th>
-                    <th>Token</th>
-                    <th>Formation</th>
-                    <th>Matière</th>
-                    <th>Prénom enseignant</th>
-                    <th>Nom enseignant</th>
-                    <th>Justificatif</th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Token</th>
+                        <th>Formation</th>
+                        <th>Matière</th>
+                        <th>Prénom enseignant</th>
+                        <th>Nom enseignant</th>
+                        <th>Justificatif</th>
+                    </tr>
+                </thead>
+                <tbody>
                     {% for absent in absents %}
                         <tr>
-                            <td>{{ absent.date }}</td>
-                            <td>{{ absent.type }}</td>
-                            <td>{{ absent.token }}</td>
-                            <td>{{ absent.nom_formation }}</td>
-                            <td>{{ absent.nome_matiere }}</td>
-                            <td>{{ absent.firsname }}</td>
-                            <td>{{ absent.lastname }}</td>
+                            <td data-label="Date">{{ absent.date }}</td>
+                            <td data-label="Type de cours">{{ absent.type }}</td>
+                            <td data-label="Token">{{ absent.token }}</td>
+                            <td data-label="Formation">{{ absent.nom_formation }}</td>
+                            <td data-label="Matière">{{ absent.nome_matiere }}</td>
+                            <td data-label="Prénom enseignant">{{ absent.firsname }}</td>
+                            <td data-label="Nom enseignant">{{ absent.lastname }}</td>
 
                             {% if absent.id not in justificatifs %}
-                                <td>
+                                <td data-label="Justificatif">
                                     <form id="form" enctype="multipart/form-data" method="POST" action="{{ path('download_justificatif') }}">
                                         <input id="file" type="file" name="justif" />
                                         <input type="hidden" name="coursId" value="{{ absent.id }}" />
                                         <br />
-                                        <button class="submit-btn" type="submit">Télécharger</button>
+                                        <button class="btn btn-primary" type="submit">Télécharger</button>
                                     </form>
                                 </td>
                             {% else %}
@@ -39,6 +43,7 @@
                             {% endif %}
                         </tr>
                     {% endfor %}
+                </tbody>
             </table>
         {% else %}
             <div>
