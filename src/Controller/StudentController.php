@@ -137,6 +137,7 @@ class StudentController extends AbstractController
 			Formation : {$coursId->getFormation()->getValues()[0]->getNomFormation()}
 			Matière : {$coursId->getMatiere()->getValues()[0]->getNomeMatiere()}
 			Type : {$coursId->getType()}
+			Groupe : {$coursId->getGroupe()}
 			Date : {$date->format("d/m/Y")}
 			Heure : {$date->format("H:i")}
 			Enseignant : {$auteur->getFirsname()} {$auteur->getLastname()}

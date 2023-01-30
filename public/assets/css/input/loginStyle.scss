@@ -14,3 +14,10 @@ form {
         font-weight: bold;
     }
   }
+
+/** STYLE SMARTPHONE **/
+@media (hover: none), (max-width: 860px){
+    form {
+        width: 90%;
+    }
+}

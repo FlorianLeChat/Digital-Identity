@@ -161,12 +161,24 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
 		if (!$resultCheckCours->fetch()) {
 			// Le cours n'existe pas ou est terminé.
-			return 2;
+			return 3;
 		}
 
-        // Identifiant de l'utilisateur
+        // Informations de l'utilisateur
         $userId = $user->getId();
+        $userTp = $user->getTp();
+        $userTd = $user->getTd();
 
+		// Vérification de l'appartenance au groupe de travail
+        $checkGroupe = $conn->prepare("SELECT * FROM cours WHERE id = :cours");
+        $resultCheckGroupe = $checkGroupe->executeQuery(["cours" => $coursId]);
+		$dataCheckGroup = $resultCheckGroupe->fetch();
+
+		if ($dataCheckGroup["type"] !== "CM" && ($dataCheckGroup["groupe"] !== $userTd && $dataCheckGroup["groupe"] !== $userTp)) {
+			// L'élève n'est pas dans le bon groupe.
+			return 2;
+		}
+	
 		// Vérification de la présence de l'utilisateur dans le cours.
         $checkPresent = $conn->prepare("SELECT 1 FROM presence_user WHERE user_id = :userId AND presence_id IN (SELECT presence_id FROM presence_cours WHERE cours_id = :coursId)");
         $resultCheckPresent = $checkPresent->executeQuery(["userId" => $userId, "coursId" => $coursId]);

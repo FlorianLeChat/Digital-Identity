@@ -3,13 +3,15 @@
 		<img src="{{ qrCode }}" alt="QR code">
 	</div>
 
+	<p id="fraude">Attention ! Toute utilisation frauduleuse vous expose à des sanctions disciplinaires<br />Des contrôles aléatoires peuvent être réalisés par l'équipe pédagogique et par l'administration</p>
+
 	<a id="closeCours" href="{{ path('close_cours', {uuid: uuid}) }}">Clôturer l'appel</a>
 	<style>
 		#qrCode{
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			height: 90vh;
+			height: 70vh;
 		}
 		#closeCours{
 			display: flex;
@@ -22,6 +24,11 @@
 			text-decoration: none;
 			border-radius: 10px;
 			font-weight: bold;
+		}
+		#fraude{
+			text-align: center;
+			color: red;
+			margin-bottom: 2rem;
 		}
 
 	</style>

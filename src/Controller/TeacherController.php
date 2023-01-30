@@ -77,9 +77,10 @@ class TeacherController extends AbstractController
         $formation = $request->request->get("formation");
         $matiere = $request->request->get("matiere");
         $type = $request->request->get("typeCours");
+        $groupe = $request->request->get("numGroupe");
 
         // Insertion dans la base de données
-		$uuid = $coursRepository->insertOne($entityManager, $id, $formation, $matiere, $type);
+		$uuid = $coursRepository->insertOne($entityManager, $id, $formation, $matiere, $type, $groupe);
 
 		// Préparation à la création de l'image finale.
         $writer = new PngWriter();

@@ -25,6 +25,8 @@
 
 			<button type="button" class="btn btn-primary"><a href="{{ path('download_certificat', {uuid: uuid}) }}">Télécharger à nouveau le certificat de présence</a></button>
 		{% elseif code == 2 %}
+			<p id="messageError">Vous n'êtes pas dans le groupe approprié pour rejoindre ce cours.</p>
+		{% elseif code == 3 %}
 			<p id="messageError">Ce cours n'existe pas ou est maintenant terminé.</p>
 		{% endif %}
 	{% endif %}

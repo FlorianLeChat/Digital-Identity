@@ -40,6 +40,9 @@ class Cours
     #[ORM\Column(length: 4096)]
     private ?string $token = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $groupe = null;
+
     public function __construct()
     {
         $this->matiere = new ArrayCollection();
@@ -201,5 +204,17 @@ class Cours
     }
     public function __toString(){ // Pour afficher les selects dans le champ id de cours dans easy admin
         return $this->getId();
+    }
+
+    public function getGroupe(): ?int
+    {
+        return $this->groupe;
+    }
+
+    public function setGroupe(?int $groupe): self
+    {
+        $this->groupe = $groupe;
+
+        return $this;
     }
 }

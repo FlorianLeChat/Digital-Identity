@@ -20,4 +20,12 @@ form .btn:hover, form .btn-lg:hover, form .btn-primary:hover, form .btn-sm:hover
   background-color: #003955;
 }
 
+/** STYLE SMARTPHONE **/
+@media (hover: none), (max-width: 860px) {
+  /* line 20, ../../../../../../wamp64/www/Projet_Miage/public/assets/css/input/loginStyle.scss */
+  form {
+    width: 90%;
+  }
+}
+
 /*# sourceMappingURL=loginStyle.css.map */
