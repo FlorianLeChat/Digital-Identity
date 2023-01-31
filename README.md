@@ -1,6 +1,10 @@
-# 🪪 Identité numérique
+# 🛂 Identité numérique
 
-Ce projet à but pédagogique est développé pour le *Master de méthodes informatiques appliquées à la gestion des entreprises* par Brahim LAMJARAD, Emre ERSOY, Ons HAMDI, Abdenour ACHOURI, Imane EL MOUNTASSER, Yanis ALLOUCHE, Robin CLAIR et Yannis BAILI.
+⚠️ **[FRENCH] Ce projet n'est pas destiné à un environnement production en dehors du cadre pédagogique et/ou de l'Université Côté d'Azur. L'utilisation hors de ce cadre est à proscrire.**
+
+⚠️ **[ENGLISH] This project is not intended for use in a production environment outside the educational context and/or the Université Côté d'Azur. Usage outside of this scope is not allowed.**
+
+Ce projet à but pédagogique est développé pour la première année du *Master de méthodes informatiques appliquées à la gestion des entreprises*. Le sujet imposé était de proposer une solution pour moderniser le système d'émargement actuel (manuscrit) afin de **protéger** les données, **prévenir** et **réduire** la fraude par des étudiants malveillants. De plus, cette solution doit nécessairement **digitaliser** la gestion des présences et des absents pour les étudiants à destination de l'administration universitaire.
 
 Il utilise le framework **[Symfony](https://symfony.com/) PHP** pour toute l'infrastructure serveur, l'architecture client utilise les langages **JavaScript**, **CSS** (via préprocesseur **SASS**) et **HTML** (via génération du moteur de modèles **TWIG**).
 
@@ -36,3 +40,5 @@ Il utilise le framework **[Symfony](https://symfony.com/) PHP** pour toute l'inf
 4. Si le QR code de contrôle est scanné, le jeton est envoyé au serveur et procède à un déchiffrement avec la clé privée précédemment créé, si le jeton retourne un résultat et si le jeton correspond à l'identifiant de présence créé dans l'étape 2, alors cela signifie que l'étudiant était réellement présent au cours (**les informations du cours et de l'étudiants sont alors envoyées**).
 
 > Avant d'effectuer toute opération et si cela est nécessaire, une paire de clé (publique et privée) sont générées automatique avec la méthode de hachage « SHA-512 » et ayant une longueur de 4096 bits.
+
+![image](https://user-images.githubusercontent.com/26360935/227712265-54fac6c9-b199-4347-9037-567528a7b92d.png)
