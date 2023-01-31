@@ -1,8 +1,8 @@
 # 🛂 Identité numérique
 
-⚠️ **[FRENCH] Ce projet n'est pas destiné à un environnement production en dehors du cadre pédagogique et/ou de l'Université Côté d'Azur. L'utilisation hors de ce cadre est à proscrire.**
+⚠️ **[FRENCH] Ce projet n'est pas destiné à un environnement production en dehors du cadre pédagogique et/ou de l'Université Côte d'Azur. L'utilisation hors de ce cadre est à proscrire.**
 
-⚠️ **[ENGLISH] This project is not intended for use in a production environment outside the educational context and/or the Université Côté d'Azur. Usage outside of this scope is not allowed.**
+⚠️ **[ENGLISH] This project is not intended for use in a production environment outside the educational context and/or the Université Côte d'Azur. Usage outside of this scope is not allowed.**
 
 Ce projet à but pédagogique est développé pour la première année du *Master de méthodes informatiques appliquées à la gestion des entreprises*. Le sujet imposé était de proposer une solution pour moderniser le système d'émargement actuel (manuscrit) afin de **protéger** les données, **prévenir** et **réduire** la fraude par des étudiants malveillants. De plus, cette solution doit nécessairement **digitaliser** la gestion des présences et des absents pour les étudiants à destination de l'administration universitaire.
 
