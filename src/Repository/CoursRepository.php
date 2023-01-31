@@ -66,6 +66,28 @@ class CoursRepository extends ServiceEntityRepository
         return is_array($result) ? $result["id"] : 0;
 	}
 
+	public function setAbsents(int $userId, int $coursId): void
+	{
+		// Permet de définir les élèves absents à un cours.
+		$conn = $this->getEntityManager()->getConnection();
+		$absents = $this->getAbsents($userId, true);
+
+		foreach ($absents as $absent)
+		{
+			// Pour chaque absent, on insère ses informations dans la base de données.
+			$query = $conn->prepare("INSERT INTO absence (justification_statut) VALUES (0)");
+			$query->execute();
+
+			$absentId = $conn->lastInsertId();
+
+			$query = $conn->prepare("INSERT INTO absence_cours (absence_id, cours_id) VALUES (:absence, :cours)");
+			$query->execute(["absence" => $absentId, "cours" => $coursId]);
+
+			$query = $conn->prepare("INSERT INTO absence_user (absence_id, user_id) VALUES (:absence, :user)");
+			$query->execute(["absence" => $absentId, "user" => $absent["id"]]);
+		}
+	}
+
 	public function getPresents(int $userId, bool $teacher = false): array
 	{
 		// Récupération des élèves présents dans la (dernière) salle de cours.
@@ -74,7 +96,7 @@ class CoursRepository extends ServiceEntityRepository
         if ($teacher)
         {
             // Élèves présents pour les professeurs
-            $query = $conn->prepare("SELECT * FROM user 
+            $query = $conn->prepare("SELECT * FROM user
             JOIN presence_user ON user.id = presence_user.user_id
             JOIN presence_cours ON presence_user.presence_id = presence_cours.presence_id
             WHERE cours_id IN (SELECT MAX(cours_id) FROM `cours_user` WHERE `user_id` = :id);");
@@ -112,85 +134,85 @@ class CoursRepository extends ServiceEntityRepository
             $cm = $conn->prepare("SELECT type FROM cours WHERE id IN (SELECT MAX(cours_id) FROM cours_user WHERE user_id = :id)");
             $resultCm = $cm->executeQuery(["id" => $userId]);
 
-            $isCM = $resultCm->fetch()["type"] === "CM";
+            $isCM = is_object($resultCm) ? $resultCm->fetch()["type"] === "CM" : false;
 
             if ($isCM)
             {
-                $query = $conn->prepare("SELECT * 
-                FROM `user` 
-                WHERE roles = '[\"ROLE_STUDENT\"]' 
+                $query = $conn->prepare("SELECT *
+                FROM `user`
+                WHERE roles = '[\"ROLE_STUDENT\"]'
                 AND formation_id IN (
-                  SELECT formation_id 
-                  FROM cours_formation 
+                  SELECT formation_id
+                  FROM cours_formation
                   WHERE cours_id = (
-                    SELECT MAX(cours_id) 
-                    FROM `cours_user` 
+                    SELECT MAX(cours_id)
+                    FROM `cours_user`
                     WHERE `user_id` = :id
                   )
-                ) 
+                )
                 AND id NOT IN (
-                  SELECT user_id 
-                  FROM presence_user 
+                  SELECT user_id
+                  FROM presence_user
                   WHERE presence_id IN (
-                    SELECT presence_id 
-                    FROM presence_cours 
+                    SELECT presence_id
+                    FROM presence_cours
                     WHERE cours_id = (
-                      SELECT MAX(cours_id) 
-                      FROM `cours_user` 
+                      SELECT MAX(cours_id)
+                      FROM `cours_user`
                       WHERE `user_id` = :id
                     )
                   )
                 );");
                 $result = $query->executeQuery(["id" => $userId]);
-    
+
                 return $result->fetchAllAssociative();
             }
             else
             {
-                $query = $conn->prepare("SELECT * 
-                FROM `user` 
-                WHERE roles = '[\"ROLE_STUDENT\"]' 
+                $query = $conn->prepare("SELECT *
+                FROM `user`
+                WHERE roles = '[\"ROLE_STUDENT\"]'
                 AND formation_id IN (
-                  SELECT formation_id 
-                  FROM cours_formation 
+                  SELECT formation_id
+                  FROM cours_formation
                   WHERE cours_id = (
-                    SELECT MAX(cours_id) 
-                    FROM `cours_user` 
+                    SELECT MAX(cours_id)
+                    FROM `cours_user`
                     WHERE `user_id` = :id
                   )
-                ) 
+                )
                 AND id NOT IN (
-                  SELECT user_id 
-                  FROM presence_user 
+                  SELECT user_id
+                  FROM presence_user
                   WHERE presence_id IN (
-                    SELECT presence_id 
-                    FROM presence_cours 
+                    SELECT presence_id
+                    FROM presence_cours
                     WHERE cours_id = (
-                      SELECT MAX(cours_id) 
-                      FROM `cours_user` 
+                      SELECT MAX(cours_id)
+                      FROM `cours_user`
                       WHERE `user_id` = :id
                     )
                   )
                 )
                 AND (td IN(
-                    SELECT groupe 
-                    FROM cours 
+                    SELECT groupe
+                    FROM cours
                     WHERE id = (
-                      SELECT MAX(cours_id) 
-                      FROM `cours_user` 
+                      SELECT MAX(cours_id)
+                      FROM `cours_user`
                       WHERE `user_id` = :id
                     )
                 ) OR tp IN(
-                    SELECT groupe 
-                    FROM cours 
+                    SELECT groupe
+                    FROM cours
                     WHERE id = (
-                      SELECT MAX(cours_id) 
-                      FROM `cours_user` 
+                      SELECT MAX(cours_id)
+                      FROM `cours_user`
                       WHERE `user_id` = :id
                     )
                 ));");
                 $result = $query->executeQuery(["id" => $userId]);
-    
+
                 return $result->fetchAllAssociative();
             }
         }

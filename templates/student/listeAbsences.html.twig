@@ -32,7 +32,7 @@
                             {% if absent.id not in justificatifs %}
                                 <td data-label="Justificatif">
                                     <form id="form" enctype="multipart/form-data" method="POST" action="{{ path('download_justificatif') }}">
-                                        <input id="file" type="file" name="justif" />
+                                        <input id="file" type="file" name="justif" accept=".pdf,image/*"/>
                                         <input type="hidden" name="coursId" value="{{ absent.id }}" />
                                         <br />
                                         <button class="btn btn-primary" type="submit">Télécharger</button>

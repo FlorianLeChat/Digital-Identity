@@ -202,9 +202,6 @@ class Cours
 
         return $this;
     }
-    public function __toString(){ // Pour afficher les selects dans le champ id de cours dans easy admin
-        return $this->getId();
-    }
 
     public function getGroupe(): ?int
     {
@@ -216,5 +213,9 @@ class Cours
         $this->groupe = $groupe;
 
         return $this;
+    }
+
+    public function __toString(){ // Pour afficher les selects dans le champ id de cours dans easy admin
+        return $this->getId();
     }
 }

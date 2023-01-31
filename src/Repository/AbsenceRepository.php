@@ -43,12 +43,7 @@ class AbsenceRepository extends ServiceEntityRepository
     {
         $conn = $this->getEntityManager()->getConnection();
 
-        $insertJustificatif = $conn->prepare("INSERT INTO absence (cours_id, justification_statut) VALUES (:cours, 0)");
-        $insertJustificatif->executeQuery(["cours" => $coursId]);
-
-        $insertId = $conn->lastInsertId();
-
-        $insertAbsence = $conn->prepare("INSERT INTO absence_user VALUES (:absence, :user)");
-        $insertAbsence->executeQuery(["absence" => $insertId, "user" => $userId]);
+        $insertJustificatif = $conn->prepare("UPDATE `absence` SET `justification_statut` = '1' WHERE id IN (SELECT absence_id FROM absence_user WHERE user_id = :user AND absence_id IN (SELECT absence_id FROM absence_cours WHERE cours_id = :cours))");
+        $insertJustificatif->executeQuery(["user" => $userId, "cours" => $coursId]);
     }
 }

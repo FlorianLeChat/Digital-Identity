@@ -55,7 +55,12 @@ class TeacherController extends AbstractController
 
 		if ($coursId !== 0) {
 			$coursRepository = $entityManager->getRepository(Cours::class);
+
+			// Définition de la fin du cours.
 			$coursRepository->setState($coursId);
+
+			// Définition des absents.
+			$coursRepository->setAbsents($this->getUser()->getId(), $coursId);
 		}
 
         return $this->redirectToRoute('app_teacher');

@@ -15,36 +15,24 @@ class Absence
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Cours $cours = null;
-
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'absences')]
     private Collection $user;
 
     #[ORM\Column]
     private ?bool $justification_statut = null;
 
+    #[ORM\ManyToMany(targetEntity: Cours::class)]
+    private Collection $cours;
+
     public function __construct()
     {
         $this->user = new ArrayCollection();
+        $this->cours = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getCours(): ?Cours
-    {
-        return $this->cours;
-    }
-
-    public function setCours(Cours $cours): self
-    {
-        $this->cours = $cours;
-
-        return $this;
     }
 
     /**
@@ -81,5 +69,33 @@ class Absence
         $this->justification_statut = $justification_statut;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Cours>
+     */
+    public function getCours(): Collection
+    {
+        return $this->cours;
+    }
+
+    public function addCour(Cours $cour): self
+    {
+        if (!$this->cours->contains($cour)) {
+            $this->cours->add($cour);
+        }
+
+        return $this;
+    }
+
+    public function removeCour(Cours $cour): self
+    {
+        $this->cours->removeElement($cour);
+
+        return $this;
+    }
+
+    public function __toString(){ 
+        return $this->getId();
     }
 }
