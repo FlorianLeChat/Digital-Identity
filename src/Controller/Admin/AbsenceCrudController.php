@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 
 class AbsenceCrudController extends AbstractCrudController
 {
@@ -22,8 +23,8 @@ class AbsenceCrudController extends AbstractCrudController
     {
         return [
            // IdField::new('id'),
-            AssociationField::new('user'),
-            AssociationField::new('cours'),
+            ArrayField::new('user'),
+            ArrayField::new('cours'),
             BooleanField::new('justification_statut'),
         ];
     }

@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Matiere;
+use App\Entity\Formation;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;

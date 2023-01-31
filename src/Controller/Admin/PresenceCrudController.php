@@ -4,10 +4,13 @@ namespace App\Controller\Admin;
 
 use App\Entity\Presence;
 use App\Entity\Cours;
+use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
+
 
 class PresenceCrudController extends AbstractCrudController
 {
@@ -22,8 +25,8 @@ class PresenceCrudController extends AbstractCrudController
         return [
            //IdField::new('id'),
             TextField::new('token'),
-            AssociationField::new('user'),
-            AssociationField::new('cours'),
+            ArrayField::new('user'),
+            ArrayField::new('cours'),
         ];
     }
     
