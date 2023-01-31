@@ -132,9 +132,10 @@ class CoursRepository extends ServiceEntityRepository
         {
             // Absences pour les professeurs
             $cm = $conn->prepare("SELECT type FROM cours WHERE id IN (SELECT MAX(cours_id) FROM cours_user WHERE user_id = :id)");
-            $resultCm = $cm->executeQuery(["id" => $userId]);
+            $queryCm = $cm->executeQuery(["id" => $userId]);
+            $resultCm = $queryCm->fetch();
 
-            $isCM = is_object($resultCm) ? $resultCm->fetch()["type"] === "CM" : false;
+            $isCM = is_array($resultCm) ? $resultCm["type"] === "CM" : false;
 
             if ($isCM)
             {
